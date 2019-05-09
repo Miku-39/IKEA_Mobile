@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "sdkVersion": "28.0.0",
+    "name": "Claris. Neo Geo",
+    "icon": "./app/theme/images/claris_service_desk-logo.png",
+    "version": "2.8",
+    "slug": "claris-neo-geo",
+    "ios": {
+      "bundleIdentifier": "ru.altsoft.saas.neogeo",
+      "icon": "./app/theme/images/appstorelogo2.png",
+      "buildNumber": "2.8"
+    },
+    "splash": {
+      "image": "./app/theme/images/8.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#ffffff"
+    },
+    "android": {
+      "package": "ru.altsoft.saas.neogeo",
+      "versionCode": 13,
+      "permissions": [
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_INTERNAL_STORAGE",
+        "WRITE_INTERNAL_STORAGE",
+        "CAMERA",
+        "CAMERA_ROLL"
+      ]
+    },
+    "description": ""
+  }
+}
