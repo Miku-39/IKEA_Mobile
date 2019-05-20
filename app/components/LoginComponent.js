@@ -24,7 +24,6 @@ class LoginComponent extends Component {
     render() {
         const keyboardVerticalOffset = Platform.OS === 'ios' ? 50 : 0
         return (
-          <ImageBackground source={Images.Background} style={styles.backgroundImage}>
             <View style={styles.screenContainer}>
                 <View style={styles.logoContainer}>
                     <Image source={Images.logo} resizeMode='contain' style={styles.logo} />
@@ -83,7 +82,7 @@ class LoginComponent extends Component {
                         onPress={this.props.changeRemember}
                         containerStyle={styles.checkboxContainer}
                         textStyle={styles.checkboxText}
-                        checkedColor='white'
+                        checkedColor='gray'
                         checked={this.props.remember}
                     />
 
@@ -102,12 +101,11 @@ class LoginComponent extends Component {
                     {
                         this.props.disabled ?
                         <View style={{alignSelf: 'center'}}>
-                            <ActivityIndicator size="large" color='#941b1b' />
+                            <ActivityIndicator size="large" color={Colors.accentColor}/>
                         </View> : null
                     }
                 </View>
             </View>
-            </ImageBackground>
 
         )
     }
@@ -180,7 +178,8 @@ const styles = StyleSheet.create({ // стили всех элементов
     marginTop: 1,
     textAlignVertical: 'center',
     fontSize: 17,
-    color: 'gray'
+    color: 'gray',
+    fontFamily: 'open-sans-semibold'
   },
   horizontalDivider: {
     height: 5
@@ -191,7 +190,7 @@ const styles = StyleSheet.create({ // стили всех элементов
   },
   enterButton: { // кнопка
     justifyContent: 'center',
-    backgroundColor: '#941b1b',
+    backgroundColor: Colors.accentColor,
     minWidth: 245,
     minHeight: 45,
     borderRadius: 30
@@ -209,6 +208,6 @@ const styles = StyleSheet.create({ // стили всех элементов
   checkboxText: {
     fontSize: 14,
     fontWeight: 'normal',
-    color: 'white'
+    color: 'gray'
   }
 });

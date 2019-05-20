@@ -39,7 +39,7 @@ export default class TicketsListItem extends React.PureComponent {
                  {(item.type.shortName == 'Внос' || item.type.shortName == 'Внос' || item.rejectionReason != null) &&
                  <Icon
                   name='receipt'
-                  color='#941b1b'/>
+                  color={Colors.accentColor}/>
                  }
                </View>
              )

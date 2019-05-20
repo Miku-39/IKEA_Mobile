@@ -11,8 +11,8 @@
       "buildNumber": "2.8"
     },
     "splash": {
-      "image": "./app/theme/images/8.png",
-      "resizeMode": "cover",
+      "image": "./app/theme/images/Khimki.png",
+      "resizeMode": "fill",
       "backgroundColor": "#ffffff"
     },
     "android": {

@@ -15,12 +15,12 @@ import ServiceScreen from './containers/ServiceScreen'
 import VisitorScreen from './containers/VisitorScreen'
 
 import api from './middleware/api'
-import { Metrics } from './theme'
+import { Metrics, Colors } from './theme'
 
 
 const styles = StyleSheet.create({
     back: {
-        backgroundColor: '#941b1b'
+        backgroundColor: Colors.accentColor
     },
     title: { color: 'white' }
 })
@@ -42,6 +42,12 @@ const Navigation = StackNavigator({
 })
 
 export default class App extends Component {
+    componentDidMount() {
+      Expo.Font.loadAsync({
+        'open-sans': require('./theme/fonts/OpenSans-Regular.ttf'),
+        'open-sans-semibold': require('./theme/fonts/OpenSans-Semibold.ttf')
+      });
+    }
     render() {
         return (
             <Provider store={store}>

@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
-    "expo": "^25.0.0",
+    "expo": "^25.1.2",
     "immutable": "^3.8.2",
     "querystring": "^0.2.0",
     "react": "16.2.0",

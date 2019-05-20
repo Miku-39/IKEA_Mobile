@@ -5,7 +5,7 @@ import { SearchBar } from 'react-native-elements'
 import { connect } from 'react-redux'
 
 import TicketsList from '../components/TicketsList'
-import { Metrics } from '../theme'
+import { Metrics, Colors } from '../theme'
 import { fetch } from '../middleware/redux/actions/Tickets'
 import { getTickets, getTicket } from '../middleware/redux/selectors'
 import Loader from '../components/Loader'
@@ -98,7 +98,7 @@ export default class TicketsScreen extends Component {
                         lightTheme
                         clearIcon={{color: '#53565A', name: 'close'}}
                         inputStyle={{backgroundColor: 'white', fontSize: 20}}
-                        containerStyle={{backgroundColor: '#941b1b', height: Metrics.navBarHeight, width: '100%', marginTop: -1}}
+                        containerStyle={{backgroundColor: Colors.accentColor, height: Metrics.navBarHeight, width: '100%', marginTop: -1}}
                         onChangeText={this._handleSearchTextChanged}
                         onClearText={this._handleHideSearchBarClick}
                         placeholder='Поиск...'
