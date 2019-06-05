@@ -178,8 +178,7 @@ const styles = StyleSheet.create({ // стили всех элементов
     marginTop: 1,
     textAlignVertical: 'center',
     fontSize: 17,
-    color: 'gray',
-    fontFamily: 'open-sans-semibold'
+    color: 'gray'
   },
   horizontalDivider: {
     height: 5

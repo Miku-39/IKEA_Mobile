@@ -1,7 +1,7 @@
 import axios from 'axios'
 import querystring from 'querystring'
 
-export const API_SERVER_URL = 'http://213.251.249.30:8090'
+export const API_SERVER_URL = 'http://api.claris.su/main/'
 //export const FILE_SERVER_URL = 'https://saas.claris.su/UserSettings/9323/Docs/'
 
 const conf = {
@@ -13,6 +13,7 @@ const conf = {
 const instance = axios.create(conf)
 
 const onError = (error) => {
+  console.log(error)
   if (error.response) {
     console.warn('axios onError', error.response)
 
@@ -54,11 +55,11 @@ const addFile = (uri) =>  {
 const authorize = () => instance.get('/vNext/v1/users/current')
 const setAuthHeader = (token) => instance.defaults.headers.authorization = `Bearer ${token}`
 
-const fetchTicketsForCheckpoint = userId => instance.get(`/vnext/v1/requests?orderBy=carNumber&filters=RequestsForCheckpoint,CurrentDayRequests&pageSize=500&pageNumber=1`)
-const fetchTicketsForSecurityChief = userId => instance.get(`/vNext/v1/requests?filters=RequestsForBolshevikSecurityChief,CurrentDayRequests&pageSize=500&pageNumber=1&orderBy=Number*-1`)
-const fetchParkingsForCars = () => instance.get(`/vNext/v1/parkings?filterBy=Type.Id="3590481191000"`)
-const fetchParkingsForGoods = () => instance.get(`/vNext/v1/parkings?filterBy=Type.Id="3590077188000"`)
-const fetchServices = () => instance.get(`/vNext/v1/services?filterBy=IsNeoGeo=true`)
+const fetchTicketsForCheckpoint = userId => instance.get(`/vnext/v1/requests?orderBy=carNumber&filters=RequestsForCheckpoint,CurrentDayRequests&pageSize=500&pageNumber=1`).catch(onError)
+//const fetchTicketsForSecurityChief = userId => instance.get(`/vNext/v1/requests?filters=RequestsForBolshevikSecurityChief,CurrentDayRequests&pageSize=500&pageNumber=1&orderBy=Number*-1`).catch(onError)
+const fetchParkingsForCars = () => instance.get(`/vNext/v1/parkings`).catch(onError)
+const fetchParkingsForGoods = () => instance.get(`/vNext/v1/parkings`).catch(onError)
+//const fetchServices = () => instance.get(`/vNext/v1/services?filterBy=IsNeoGeo=true`).catch(onError)
 const fetchAllTickets = companyId => {
     const conf = {
         params: {
@@ -76,6 +77,6 @@ const updateTicketStatus = (ticket) => instance.patch(`/vnext/v1/requests/${tick
 
 const addTicket = (ticket) => instance.post('/vNext/v1/requests', ticket).catch(onError)
 
-export default { login, authorize, setAuthHeader, fetchTicketsForCheckpoint, fetchTicketsForSecurityChief,
-                 fetchParkingsForCars, fetchParkingsForGoods, fetchServices, fetchAllTickets, updateTicketStatus,
+export default { login, authorize, setAuthHeader, fetchTicketsForCheckpoint,
+                 fetchParkingsForCars, fetchParkingsForGoods, fetchAllTickets, updateTicketStatus,
                  addTicket, addFile }

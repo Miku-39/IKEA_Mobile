@@ -42,12 +42,6 @@ const Navigation = StackNavigator({
 })
 
 export default class App extends Component {
-    componentDidMount() {
-      Expo.Font.loadAsync({
-        'open-sans': require('./theme/fonts/OpenSans-Regular.ttf'),
-        'open-sans-semibold': require('./theme/fonts/OpenSans-Semibold.ttf')
-      });
-    }
     render() {
         return (
             <Provider store={store}>

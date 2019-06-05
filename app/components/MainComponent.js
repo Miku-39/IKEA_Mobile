@@ -72,25 +72,6 @@ export default MainComponent = (props) => {
 
                 </View>
 
-
-                <View style={styles.ButtonsContainer}>
-
-                  <TouchableOpacity onPress={() => { props.addServiceTicket() }}>
-                      <View style={styles.Button}>
-                          <Image resizeMode='contain' source={Images.wrench} style={styles.buttonImage} />
-                          <Text style={styles.buttonLabel}>Заявка на{"\n"}обслуживание</Text>
-                      </View>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => { props.addAltServiceTicket() }}>
-                      <View style={styles.Button}>
-                          <Image resizeMode='contain' source={Images.wrenchAlt} style={styles.buttonImage} />
-                          <Text style={styles.buttonLabel}>Заявка на доп.{"\n"}обслуживание</Text>
-                      </View>
-                  </TouchableOpacity>
-
-                </View>
-
             </View>
         </ScrollView>
     )
