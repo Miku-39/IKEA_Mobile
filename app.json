@@ -1,22 +1,21 @@
 {
   "expo": {
-    "sdkVersion": "28.0.0",
-    "name": "Claris. Neo Geo",
+    "sdkVersion": "32.0.0",
+    "name": "Кларис. Химки",
     "icon": "./app/theme/images/claris_service_desk-logo.png",
     "version": "2.8",
-    "slug": "claris-neo-geo",
+    "slug": "claris-khimki",
     "ios": {
-      "bundleIdentifier": "ru.altsoft.saas.neogeo",
+      "bundleIdentifier": "ru.altsoft.saas.khimki",
       "icon": "./app/theme/images/appstorelogo2.png",
       "buildNumber": "2.8"
     },
     "splash": {
       "image": "./app/theme/images/Khimki.png",
-      "resizeMode": "fill",
       "backgroundColor": "#ffffff"
     },
     "android": {
-      "package": "ru.altsoft.saas.neogeo",
+      "package": "ru.altsoft.saas.khimki",
       "versionCode": 13,
       "permissions": [
         "READ_EXTERNAL_STORAGE",
