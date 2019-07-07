@@ -20,8 +20,7 @@ import { timeId, hourId } from '../containers/timeHour'
 const NEW_TICKET_STATUS_ID = '4285215000';
 
 const CAR_TICKET_TYPE = '393629546000';
-const GOODS_IN_TICKET_TYPE = '393629549000';
-const GOODS_OUT_TICKET_TYPE = '421534163000';
+const GOODS_TICKET_TYPE = '393629549000';
 
 const headerButtonsHandler = { save: () => null }
 
@@ -45,13 +44,10 @@ export default class TicketScreen extends Component {
     static navigationOptions = ({navigation}) => {
         switch(navigation.state.params.ticketType){
           case 'CAR':
-              headerTitle = ' Авто'
+              headerTitle = 'Гость'
               break;
-          case 'GOODS_ARRIVE':
-              headerTitle = 'Внос'
-              break;
-          case 'GOODS_LEAVE':
-              headerTitle = 'Вынос'
+          case 'GOODS':
+              headerTitle = 'Внос/вынос'
               break;
         }
         return ({
@@ -74,11 +70,8 @@ export default class TicketScreen extends Component {
           case 'CAR':
               ticketTypeId = CAR_TICKET_TYPE;
               break;
-          case 'GOODS_ARRIVE':
-              ticketTypeId = GOODS_IN_TICKET_TYPE;
-              break;
-          case 'GOODS_LEAVE':
-              ticketTypeId = GOODS_OUT_TICKET_TYPE;
+          case 'GOODS':
+              ticketTypeId = GOODS_TICKET_TYPE;
               break;
         }
         const nowDate = new Date();
@@ -101,6 +94,7 @@ export default class TicketScreen extends Component {
             carNumber: '',
             actualCreationDate: nowDate,
             visitDate: minDate,
+            expirationDate: nowDate,
             hour: hourId(ticketHour),
             time: timeId(ticketTime),
             author: employeeId,
@@ -111,7 +105,7 @@ export default class TicketScreen extends Component {
             parkingType: ticketParkingType,
             parking: ticketParking,
             materialValuesData: '',
-            lift: false
+            longTerm: false
         }
 
         this.setState({ticket: ticket, showCarFields: showCarFields,
@@ -147,19 +141,17 @@ export default class TicketScreen extends Component {
         const { ticket } = this.state
         const { ticketType } = this.props.navigation.state.params
 
-        if(ticketType == 'VISITOR' && ticket.visitorFullName == ''){
-          Alert.alert( 'Внимание', 'Не заполнены данные о посетителе',[{text: 'Закрыть', onPress: () => { }}])
-        }else{
-          if((ticketType == 'CAR') && ticket.carNumber == '' && ticket.carModelText == ''){
-            Alert.alert( 'Внимание', 'Не заполнены данные о авто',[{text: 'Закрыть', onPress: () => { }}])
-          }else{
-            if((ticketType == 'GOODS_ARRIVE' || ticketType == 'GOODS_LEAVE') && ticket.materialValuesData == ''){
-              Alert.alert( 'Внимание', 'Не заполнены данные о грузе',[{text: 'Закрыть', onPress: () => { }}])
-            }else{
-              this.props.addTicket(ticket)
-            }
-          }
+        if(!ticket.carNumber || !ticket.carModelText){
+          ticket.parking = null
+          ticket.parkingType = null
         }
+        if(!ticket.visitorFullName || !ticket.whoMeets){
+          Alert.alert( 'Ошибка', 'Не заполнены обязательные поля',
+          [{text: 'Закрыть', onPress: () => { }}])
+        }else{
+          this.props.addTicket(ticket)
+        }
+        console.log(ticket)
 
     }
 
@@ -171,6 +163,13 @@ export default class TicketScreen extends Component {
         const { ticket } = this.state
         ticket.visitorFullName = text
         this.setState({ticket})
+    }
+
+    updateTextField = (text, field) => {
+      const { ticket } = this.state
+      ticket[field] = text
+      console.log(ticket)
+      this.setState({ticket})
     }
 
     updateCarModel = text => {
@@ -191,24 +190,15 @@ export default class TicketScreen extends Component {
         this.setState({ticket})
     }
 
-    updateParkingPlace = text => {
-        const { ticket } = this.state
-        ticket.parkingPlace = text
-        if ( ticket.parking == 3588462098000 ) {
-          ticket.parkingPlace = null
-        }
-        this.setState({ticket})
-    }
-
     updateParking = (name, id) => {
       const { ticket } = this.state
       ticket.parking = id
       this.setState({ticket})
     }
 
-    updateLift = check => {
+    updateLongTerm = check => {
         const { ticket } = this.state
-        ticket.lift = check
+        ticket.longTerm = check
         this.setState({ticket})
     }
 
@@ -229,6 +219,12 @@ export default class TicketScreen extends Component {
         this.setState({ticket})
     }
 
+    updateExpirationDate = date => {
+        const { ticket } = this.state
+        ticket.expirationDate = date
+        this.setState({ticket})
+    }
+
     render = () => {
         const { ticket, showCarFields, showGoodsFields,
            ticketType, session, selectedValue, selectedParking} = this.state
@@ -243,10 +239,12 @@ export default class TicketScreen extends Component {
                     updateCarModel={this.updateCarModel}
                     updateCarNumber={this.updateCarNumber}
                     updateVisitDate={this.updateVisitDate}
+                    updateExpirationDate={this.updateExpirationDate}
                     updateParkingPlace={this.updateParkingPlace}
                     updateParking={this.updateParking}
-                    updateLift={this.updateLift}
+                    updateLongTerm={this.updateLongTerm}
                     updateGoods={this.updateGoods}
+                    updateTextField={this.updateTextField}
                     saveFile={this.saveFile}
 
                     showCarFields={showCarFields}

@@ -35,7 +35,6 @@ export default class TicketsList extends React.PureComponent {
                 "Причина отклонения",
                 item.rejectionReason
                )}
-               if(item.status.name != 'Закрыта'){
                  if(item.type.shortName != 'Внос' && item.type.shortName != 'Вынос' && item.status.name == 'Отклонена'){
                    return(
                         <TouchableHighlight onPress={showDeclineReason} underlayColor="#909090">
@@ -47,7 +46,6 @@ export default class TicketsList extends React.PureComponent {
                       <TicketsListItem item={item} />
                  )
                }
-             }
     }
 
     render() {

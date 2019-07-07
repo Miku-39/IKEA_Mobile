@@ -18,7 +18,7 @@ import { getSession } from '../middleware/redux/selectors'
 import { storeCredentials, loadCredentials } from '../middleware/utils/AsyncStorage'
 const NEW_TICKET_STATUS_ID = '4285215000';
 
-const VISITOR_TICKET_TYPE = '393629542000';
+const VISITOR_TICKET_TYPE = '393629546000';
 const CARD_TICKET_TYPE = '437149164000';
 
 const headerButtonsHandler = { save: () => null }
@@ -90,6 +90,7 @@ export default class VisitorScreen extends Component {
 
         const ticket = {
             visitorFullName: '',
+            whoMeets: '',
             actualCreationDate: nowDate,
             visitDate: minDate,
             author: employeeId,
@@ -133,9 +134,9 @@ export default class VisitorScreen extends Component {
     save = () => {
         const { ticket } = this.state
         const { ticketType } = this.props.navigation.state.params
-
+        
         if(ticket.visitorFullName == ''){
-          Alert.alert( 'Внимание', 'Не заполнены данные о посетителе',[{text: 'Закрыть', onPress: () => { }}])
+          Alert.alert( 'Внимание', 'Не заполнены обязательные поля',[{text: 'Закрыть', onPress: () => { }}])
         }else{
           if((ticket.visitorFullName.match(/ /g) || []).length != 2 && ticketType == 'VISITOR'){
             Alert.alert( 'Внимание', 'Заполните ФИО по формату "Фамилия Имя Отчество"',[{text: 'Закрыть', onPress: () => { }}])
@@ -166,6 +167,12 @@ export default class VisitorScreen extends Component {
         this.setState({ticket})
     }
 
+    updateWhoMeets = text => {
+        const { ticket } = this.state
+        ticket.whoMeets = text
+        this.setState({ticket})
+    }
+
     updateMultipleEntry = check => {
       const { ticket } = this.state
       ticket.multipleEntry = check
@@ -191,6 +198,7 @@ export default class VisitorScreen extends Component {
                     updateVisitor={this.updateVisitor}
                     updateVisitDate={this.updateVisitDate}
                     updateMultipleEntry={this.updateMultipleEntry}
+                    updateWhoMeets={this.updateWhoMeets}
                     saveFile={this.saveFile}
 
                     ticketType={ticketType}

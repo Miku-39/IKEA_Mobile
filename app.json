@@ -1,6 +1,6 @@
 {
   "expo": {
-    "sdkVersion": "28.0.0",
+    "sdkVersion": "32.0.0",
     "name": "Кларис. Химки",
     "icon": "./app/theme/images/claris_service_desk-logo.png",
     "version": "2.8",

@@ -10,11 +10,11 @@ import {  View,
           LayoutAnimation } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { Fumi } from 'react-native-textinput-effects'
-import DatePicker from 'react-native-datepicker'
-import ReactNativePickerModule from 'react-native-picker-module'
 import { CheckBox } from 'react-native-elements'
-
 import { Images, Colors } from '../theme'
+import DatePickerComponent from '../components/DatePicker'
+import PickerComponent from '../components/Picker'
+import ReactNativePickerModule from 'react-native-picker-module'
 
 const { UIManager } = NativeModules;
 
@@ -27,196 +27,167 @@ export default class TicketScreen extends Component {
      this.state = {
        selectedValue: null,
        selectedParking: this.props.initialParking,
-       visitDate: this.props.ticket.visitDate,
-       lift: false,
-       multipleEntry: false
+       longTerm: false,
+       allFields: false
      }
   }
 
-  updateLift = () =>{
-    LayoutAnimation.spring();
-    this.setState({lift: !this.state.lift})
-    this.props.updateLift(!this.state.lift)
+  updateLongTerm = () =>{
+    LayoutAnimation.easeInEaseOut()
+    this.setState({longTerm: !this.state.longTerm})
+    this.props.updateLongTerm(!this.state.longTerm)
   }
 
+  showAllFields = () =>{
+    LayoutAnimation.easeInEaseOut()
+    this.setState({allFields: !this.state.allFields})
+  }
+
+
   render () {
-    const minDate = new Date()
-    const maxDate = new Date()
-
-    switch(this.props.ticketType){
-      case 'CAR':
-          parkings = this.props.carParkings;
-          parkingsByIndex = parkings.map(parking => {return parking.name})
-          idByIndex = parkings.map(parking => {return parking.id})
-          break;
-      case 'GOODS_ARRIVE':
-          parkings = this.props.goodsParkings;
-          parkingsByIndex = parkings.map(parking => {return parking.name})
-          idByIndex = parkings.map(parking => {return parking.id})
-          break;
-      case 'GOODS_LEAVE':
-          parkings = this.props.goodsParkings;
-          parkingsByIndex = parkings.map(parking => {return parking.name})
-          idByIndex = parkings.map(parking => {return parking.id})
-          break;
-    }
-
-    minDate.setFullYear(minDate.getFullYear()-1)
-    maxDate.setFullYear(minDate.getFullYear()+2)
-    pickerFormat = this.state.selectedParking == 'Гостевая' ? "YYYY-MM-DD HH:mm" : "YYYY-MM-DD"
-    pickerMode = this.state.selectedParking == 'Гостевая' ? "datetime" : "date"
+    parkings = this.props.carParkings;
+    parkingsByIndex = parkings.map(parking => {return parking.name})
+    idByIndex = parkings.map(parking => {return parking.id})
     androidMargin = Platform.OS === 'android' ? 7 : 0
     Text.defaultProps = Text.defaultProps || {};
     Text.defaultProps.allowFontScaling = true;
     return (
         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
-            <ScrollView>
+            <ScrollView style={{backgroundColor: Colors.backgroundColor}}>
               <View style={{
-               backgroundColor: '#FFF',
-               borderRadius: 10,
-               flexDirection: 'column'}}>
-                   {this.props.ticketType == 'CAR' &&
-                     <View>
-                       <Fumi
-                           label={'ФИО посетителя'}
-                           iconClass={Icon}
-                           iconName={'person'}
-                           iconColor={'#53565A'}
-                           iconSize={20}
-                           inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
-                           onChangeText={this.props.updateVisitor}
-                       />
-                     </View>}
-
-                    <Fumi
-                        label={'Марка автомобиля'}
-                        iconClass={Icon}
-                        iconName={'directions-car'}
-                        iconColor={'#53565A'}
-                        iconSize={20}
-                        inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
-                        onChangeText={this.props.updateCarModel}
-                    />
-                    <Fumi
-                        label={'Номер автомобиля'}
-                        iconClass={Icon}
-                        iconName={'directions-car'}
-                        iconColor={'#53565A'}
-                        iconSize={20}
-                        inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
-                        onChangeText={this.props.updateCarNumber}
-                    />
-
-                  { (this.state.selectedParking != 'Гостевая' && this.props.ticketType == 'CAR' && this.state.selectedParking != 'Курьерская') &&
-                    <Fumi
-                        label={'Место на парковке'}
-                        iconClass={Icon}
-                        iconName={'directions-car'}
-                        iconColor={'#53565A'}
-                        iconSize={20}
-                        inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
-                        onChangeText={this.props.updateParkingPlace}
-                    />
-                  }
-
-                  {this.props.ticketType != 'CAR' &&
-                  <View>
-                    <Fumi
-                        label={'Данные о грузе'}
-                        iconClass={Icon}
-                        iconName={'receipt'}
-                        iconColor={'#53565A'}
-                        iconSize={20}
-                        inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
-                        onChangeText={this.props.updateGoods}
-                    />
-                    <Fumi
-                        label={'ФИО грузчиков'}
-                        iconClass={Icon}
-                        iconName={'person'}
-                        iconColor={'#53565A'}
-                        iconSize={20}
-                        inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
-                        onChangeText={this.props.updateVisitor}
-                    />
+                flexDirection: 'column',
+                marginBottom: 150}}>
+                  <View style={styles.fieldsContainer}>
+                      <CheckBox
+                        title='Дополнительные поля'
+                        containerStyle={styles.checkboxContainer}
+                        textStyle={styles.checkboxText}
+                        checked={this.state.allFields}
+                        checkedColor={Colors.textColor}
+                        onPress={this.showAllFields}/>
+                      <CheckBox
+                        title='Долгосрочная'
+                        containerStyle={styles.checkboxContainer}
+                        textStyle={styles.checkboxText}
+                        checked={this.state.longTerm}
+                        checkedColor={Colors.textColor}
+                        onPress={this.updateLongTerm}/>
                   </View>
-                }
-              </View>
 
-                    {
-                      Platform.OS === 'android' &&
-                      <View style={{marginTop: 10}}>
-                      <Text style={styles.pickerLabel}>Парковка</Text>
-                      <View style={styles.picker}>
-                      <Picker
-                          selectedValue={this.state.selectedParking}
-                          style={{height: 40, width: 180}}
-                          onValueChange={(itemValue, itemIndex) =>
-                          {
-                          this.props.updateParking(itemValue, idByIndex[itemIndex]);
-                          LayoutAnimation.spring();
-                          this.setState({selectedParking: itemValue})
-                          }
-                          }>
-                          {parkings.map(parking => {return <Picker.Item label={parking.name} value={parking.name}/>})}
-                      </Picker>
-                      </View>
-                      </View>
-                    }
+                  <View style={styles.fieldsContainer}>
+                      <Fumi
+                          style={styles.fumiStyle}
+                          label={'ФИО посетителя'}
+                          iconClass={Icon}
+                          iconName={'person'}
+                          iconColor={Colors.textColor}
+                          iconSize={20}
+                          labelStyle={styles.fumiLabel}
+                          inputStyle={styles.fumiInput}
+                          onChangeText={this.props.updateVisitor}/>
+                      {this.state.allFields &&
+                          <View>
+                          <Fumi
+                              style={styles.fumiStyle}
+                              label={'E-mail посетителя'}
+                              iconClass={Icon}
+                              iconName={'mail'}
+                              iconColor={Colors.textColor}
+                              iconSize={20}
+                              labelStyle={styles.fumiLabel}
+                              inputStyle={styles.fumiInput}
+                              onChangeText={(text) => {this.props.updateTextField(text, 'khimkiEmailGuest')}}/>
+                          <Fumi
+                              style={styles.fumiStyle}
+                              label={'Телефон посетителя'}
+                              iconClass={Icon}
+                              iconName={'phone'}
+                              iconColor={Colors.textColor}
+                              iconSize={20}
+                              labelStyle={styles.fumiLabel}
+                              inputStyle={styles.fumiInput}
+                              onChangeText={(text) => {this.props.updateTextField(text, 'khimkiGuestPhone')}}/>
+                          </View>}
+                      <Fumi
+                          style={styles.fumiStyle}
+                          label={'ФИО встречающего'}
+                          iconClass={Icon}
+                          iconName={'person'}
+                          iconColor={Colors.textColor}
+                          iconSize={20}
+                          labelStyle={styles.fumiLabel}
+                          inputStyle={styles.fumiInput}
+                          onChangeText={(text) => {this.props.updateTextField(text, 'whoMeets')}}/>
+                      {this.state.allFields &&
+                          <View>
+                          <Fumi
+                              style={styles.fumiStyle}
+                              label={'E-mail встречающего'}
+                              iconClass={Icon}
+                              iconName={'mail'}
+                              iconColor={Colors.textColor}
+                              iconSize={20}
+                              labelStyle={styles.fumiLabel}
+                              inputStyle={styles.fumiInput}
+                              onChangeText={(text) => {this.props.updateTextField(text, 'khimkiEmailMeeting')}}/>
+                          <Fumi
+                              style={styles.fumiStyle}
+                              label={'Телефон встречающего'}
+                              iconClass={Icon}
+                              iconName={'phone'}
+                              iconColor={Colors.textColor}
+                              iconSize={20}
+                              labelStyle={styles.fumiLabel}
+                              inputStyle={styles.fumiInput}
+                              onChangeText={(text) => {this.props.updateTextField(text, 'phone')}}/>
+                          </View>}
+                  </View>
 
-                    {
-                        Platform.OS === 'ios' &&
-                        <View style={{marginTop: 10}}>
-                        <Text style={styles.pickerLabel}>Парковка</Text>
-                          <ReactNativePickerModule
-                                          pickerRef={e => pickerRef = e}
-                                          value={this.state.selectedValue}
-                                          title='Парковка'
-                                          cancelButton='Отмена'
-                                          confirmButton='Выбрать'
-                                          items={parkings.map(parking => {return parking.name})}
-                                          onValueChange={(value) => {
-                                               this.props.updateParking(parkingsByIndex[value], idByIndex[value]);
-                                               LayoutAnimation.spring();
-                                               this.setState({selectedValue: value })
-                                               this.setState({selectedParking: parkingsByIndex[value]})
-                                          }}/>
+                  <View style={styles.fieldsContainer}>
+                      <Fumi
+                          style={styles.fumiStyle}
+                          label={'Марка автомобиля'}
+                          iconClass={Icon}
+                          iconName={'directions-car'}
+                          iconColor={Colors.textColor}
+                          iconSize={20}
+                          labelStyle={styles.fumiLabel}
+                          inputStyle={styles.fumiInput}
+                          onChangeText={this.props.updateCarModel}/>
+                      <Fumi
+                          style={styles.fumiStyle}
+                          label={'Номер автомобиля'}
+                          iconClass={Icon}
+                          iconName={'directions-car'}
+                          iconColor={Colors.textColor}
+                          iconSize={20}
+                          labelStyle={styles.fumiLabel}
+                          inputStyle={styles.fumiInput}
+                          onChangeText={this.props.updateCarNumber}/>
+                      <PickerComponent
+                          items={parkings}
+                          label="Парковка"
+                          idByIndex={idByIndex}
+                          itemsByIndex={parkingsByIndex}
+                          onUpdate={this.props.updateParking}/>
+                  </View>
 
-                          <TouchableOpacity onPress={() => {pickerRef.show()}} style={styles.picker}>
-                            <Text style={styles.pickerText}>{this.state.selectedParking}</Text>
-                          </TouchableOpacity>
-
-                        </View>
+                  <View style={styles.fieldsContainer}>
+                      <DatePickerComponent
+                            date={this.props.ticket.visitDate}
+                            onUpdate={this.props.updateVisitDate}
+                            label="Дата посещения"
+                            placeholder="Выберите дату"/>
+                      {this.state.longTerm &&
+                        <DatePickerComponent
+                                date={this.props.ticket.expirationDate}
+                                onUpdate={this.props.updateExpirationDate}
+                                label="Дата окончания"
+                                placeholder="Выберите дату"
+                                />
                       }
+                  </View>
 
-                <View style={{marginTop: 10}}>
-                    <Text style={styles.pickerLabel}>{this.state.selectedParking == 'Гостевая' ? 'Дата и время посещения' : 'Дата посещения'}</Text>
-
-                    <DatePicker
-                        style={{width: 200, alignSelf: 'center', marginTop: 5}}
-                        date={this.props.ticket.visitDate}
-                        mode={pickerMode}
-                        placeholder="Выберите дату"
-                        format={pickerFormat}
-                        minDate={minDate}
-                        minuteInterval={5}
-                        locale="ru-RU"
-                        maxDate={maxDate}
-                        confirmBtnText="Подтвердить"
-                        cancelBtnText="Отмена"
-                        placeholder='Выберите дату посещения'
-                        customStyles={{
-                            dateIcon: {
-                                width: 0
-                            },
-                            dateInput: {
-                                borderRadius: 20,
-                                borderWidth: 0,
-                                backgroundColor: '#C9C8C7'
-                            }
-                        }}
-                        onDateChange={this.props.updateVisitDate}
-                    />
                 </View>
             </ScrollView>
         </View>
@@ -225,10 +196,20 @@ export default class TicketScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-   text: {
-      fontSize: 30,
-      alignSelf: 'center',
-      color: 'red'
+   fieldsContainer: {
+     backgroundColor: Colors.fieldsColor,
+     borderRadius: 20,
+     marginBottom: 10
+   },
+   fumiStyle: {
+     borderRadius: 20,
+     backgroundColor: Colors.fieldsColor
+   },
+   fumiInput: {
+     color: Colors.textColor
+   },
+   fumiLabel: {
+     color: Colors.textColor
    },
    picker: {
      borderRadius: 20,
@@ -237,11 +218,11 @@ const styles = StyleSheet.create({
      height: 40,
      alignSelf: 'center',
      alignItems: 'center',
-     backgroundColor: '#C9C8C7'
+     backgroundColor: Colors.buttonColor
    },
    pickerLabel: {
      fontWeight: 'bold',
-     color: '#53565A',
+     color: Colors.textColor,
      fontSize: 16,
      alignSelf: 'center',
      textAlign: 'center'
@@ -250,17 +231,17 @@ const styles = StyleSheet.create({
      fontSize: 18,
      alignSelf: 'center',
      margin: 8,
-     color: '#53565A'
+     color: Colors.textColor
     },
    checkboxContainer: {
      marginTop: 8,
-     backgroundColor: '#FFF',
+     backgroundColor: Colors.fieldsColor,
      borderRadius: 10,
      borderWidth: 0
    },
    checkboxText: {
      fontSize: 16,
      fontWeight: 'bold',
-     color: '#53565A'
+     color: Colors.textColor
    }
 })

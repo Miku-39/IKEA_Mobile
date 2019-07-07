@@ -47,7 +47,7 @@ const addFile = (uri) =>  {
     bodyFormData.append("file", {
       uri: uri,
       type: "image/jpeg", // or photo.type
-      name: "NeoGeoMobile.jpg"
+      name: "MobileApp.jpg"
     });
     return instance.post("/vNext/v1/files", bodyFormData, { headers: {'Content-Type': 'multipart/form-data' }} );
 }

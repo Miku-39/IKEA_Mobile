@@ -13,10 +13,9 @@ export default class TicketsListItem extends React.PureComponent {
           Alert.alert(
             "Информация",
             `${item.carModelText && 'Машина: ' + item.carModelText + ' ' + item.carNumber || 'Авто не указано'}` + "\n"
-            + 'Водитель: ' + item.visitorFullName + "\n"
-            + 'Груз: ' + item.materialValuesData + "\n"
+            + 'Водитель: ' + `${item.visitorFullName ? item.visitorFullName : 'не указан'}`  + "\n"
+            + 'Груз: ' + `${item.materialValuesData ? item.materialValuesData : 'не указан'}` + "\n"
             + `${item.materialValuesSize == null ? '' : 'Габариты груза: '+ item.materialValuesSize}`
-            + 'Лифт: ' + `${item.lift && item.lift ? 'да' : 'нет'}`
             + `${item.rejectionReason && ('\n' + 'Причина отклонения: ' + item.rejectionReason) || ''}`,
            )}
 
@@ -57,8 +56,9 @@ export default class TicketsListItem extends React.PureComponent {
                </View>
              )
            }
-           switch(item.type.shortName){
-             case 'Внос' || 'Вынос':
+           console.log(item.type.id + ' ' + item.type.shortName)
+           switch(item.type.id){
+             case '393629549000':
              return (
                       <View style={{width: '100%'}}>
                       <TouchableHighlight onPress={showAlert} underlayColor="#909090">
@@ -69,7 +69,7 @@ export default class TicketsListItem extends React.PureComponent {
                       {header()}
 
                       <View style={{flexDirection: 'row'}}>
-                        <Text style={{fontSize: 18, color: 'black'}}>{item.carModelText && item.carModelText + ' ' + item.carNumber || 'Авто не указано'}</Text>
+                        <Text style={{fontSize: 18, color: 'black'}}>{item.carNumber ? item.carNumber : '' + ' ' + item.carModelText ? item.carModelText : ''}</Text>
                       </View>
 
                       <View style={{flexDirection: 'row'}}>
@@ -86,7 +86,7 @@ export default class TicketsListItem extends React.PureComponent {
                   )
                   break;
 
-                  case 'Гость':
+                  case '393629546000':
                   return (
                     <View style={{flexDirection: 'row', width: '100%', backgroundColor: 'white', margin: 1, borderRadius: 5}}>
                     <View style={{width: 6, backgroundColor: status2colors[item.status && item.status.id], borderRadius: 5}}></View>
@@ -95,26 +95,7 @@ export default class TicketsListItem extends React.PureComponent {
                       {header()}
 
                       <View style={{flexDirection: 'row'}}>
-                        <Text style={{fontSize: 18, color: 'black'}}>{item.visitorFullName && item.visitorFullName ||  'ФИО не указано'}</Text>
-                      </View>
-
-                      {ticketInfo()}
-
-                      </View>
-                    </View>
-                  )
-                  break;
-
-                  case 'Авто':
-                  return (
-                    <View style={{flexDirection: 'row', width: '100%', backgroundColor: 'white', margin: 1, borderRadius: 5}}>
-                    <View style={{width: 6, backgroundColor: status2colors[item.status && item.status.id], borderRadius: 5}}></View>
-                      <View style={{flexDirection: 'column', marginLeft: 8, marginBottom: 1 }}>
-
-                      {header()}
-
-                      <View style={{flexDirection: 'row'}}>
-                        <Text style={{fontSize: 18, color: 'black'}}>{item.carNumber + ' ' + item.carModelText}</Text>
+                        <Text style={{fontSize: 18, color: 'black'}}>{item.carNumber ? item.carNumber : '' + ' ' + item.carModelText ? item.carModelText : ''}</Text>
                       </View>
 
                       <View style={{flexDirection: 'row'}}>
