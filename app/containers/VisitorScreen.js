@@ -76,23 +76,10 @@ export default class VisitorScreen extends Component {
               ticketTypeId = CARD_TICKET_TYPE;
               break;
         }
-        const nowDate = new Date();
-        const minDate = nowDate
-        minDate.setMinutes(minDate.getMinutes() + 5 - minDate.getMinutes() % 5)
-
-        if(ticketType == 'VISITOR' || ticketType == 'SERVICE'){
-          ticketParking = null;
-          ticketParkingType = null;
-        }
-
-        ticketHour = ((minDate.getHours()<10?'0':'') + minDate.getHours())
-        ticketTime = ((minDate.getMinutes()<10?'0':'') + minDate.getMinutes())
 
         const ticket = {
             visitorFullName: '',
-            whoMeets: '',
-            actualCreationDate: nowDate,
-            visitDate: minDate,
+            actualCreationDate: new Date(),
             author: employeeId,
             status: NEW_TICKET_STATUS_ID,
             type: ticketTypeId,
@@ -134,7 +121,7 @@ export default class VisitorScreen extends Component {
     save = () => {
         const { ticket } = this.state
         const { ticketType } = this.props.navigation.state.params
-        
+
         if(ticket.visitorFullName == ''){
           Alert.alert( 'Внимание', 'Не заполнены обязательные поля',[{text: 'Закрыть', onPress: () => { }}])
         }else{
@@ -167,24 +154,6 @@ export default class VisitorScreen extends Component {
         this.setState({ticket})
     }
 
-    updateWhoMeets = text => {
-        const { ticket } = this.state
-        ticket.whoMeets = text
-        this.setState({ticket})
-    }
-
-    updateMultipleEntry = check => {
-      const { ticket } = this.state
-      ticket.multipleEntry = check
-      this.setState({ticket})
-    }
-
-    updateVisitDate = date => {
-        const { ticket } = this.state
-        ticket.visitDate = date
-        this.setState({ticket})
-    }
-
     render = () => {
         const { ticket,
            ticketType, session} = this.state
@@ -196,9 +165,6 @@ export default class VisitorScreen extends Component {
                 <VisitorTicketEditor
                     ticket={ticket}
                     updateVisitor={this.updateVisitor}
-                    updateVisitDate={this.updateVisitDate}
-                    updateMultipleEntry={this.updateMultipleEntry}
-                    updateWhoMeets={this.updateWhoMeets}
                     saveFile={this.saveFile}
 
                     ticketType={ticketType}
