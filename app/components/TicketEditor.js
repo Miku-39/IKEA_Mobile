@@ -39,15 +39,20 @@ export default class TicketScreen extends Component {
   }
 
   showAllFields = () =>{
+    if (this.state.allFields){
+      this.props.updateField(null, 'khimkiEmailGuest');
+      this.props.updateField(null, 'khimkiGuestPhone');
+      this.props.updateField(null, 'khimkiEmailMeeting');
+      this.props.updateField(null, 'phone');
+    }
     LayoutAnimation.easeInEaseOut()
     this.setState({allFields: !this.state.allFields})
   }
 
 
   render () {
-    parkings = this.props.carParkings;
-    parkingsByIndex = parkings.map(parking => {return parking.name})
-    idByIndex = parkings.map(parking => {return parking.id})
+    parkingsByIndex = this.props.carParkings.map(parking => {return parking.name})
+    idByIndex = this.props.carParkings.map(parking => {return parking.id})
     androidMargin = Platform.OS === 'android' ? 7 : 0
     Text.defaultProps = Text.defaultProps || {};
     Text.defaultProps.allowFontScaling = true;
@@ -84,7 +89,7 @@ export default class TicketScreen extends Component {
                           iconSize={20}
                           labelStyle={styles.fumiLabel}
                           inputStyle={styles.fumiInput}
-                          onChangeText={this.props.updateVisitor}/>
+                          onChangeText={(text) => {this.props.updateField(text, 'visitorFullName')}}/>
                       {this.state.allFields &&
                           <View>
                           <Fumi
@@ -96,7 +101,7 @@ export default class TicketScreen extends Component {
                               iconSize={20}
                               labelStyle={styles.fumiLabel}
                               inputStyle={styles.fumiInput}
-                              onChangeText={(text) => {this.props.updateTextField(text, 'khimkiEmailGuest')}}/>
+                              onChangeText={(text) => {this.props.updateField(text, 'khimkiEmailGuest')}}/>
                           <Fumi
                               style={styles.fumiStyle}
                               label={'Телефон посетителя'}
@@ -106,7 +111,7 @@ export default class TicketScreen extends Component {
                               iconSize={20}
                               labelStyle={styles.fumiLabel}
                               inputStyle={styles.fumiInput}
-                              onChangeText={(text) => {this.props.updateTextField(text, 'khimkiGuestPhone')}}/>
+                              onChangeText={(text) => {this.props.updateField(text, 'khimkiGuestPhone')}}/>
                           </View>}
                       <Fumi
                           style={styles.fumiStyle}
@@ -117,7 +122,7 @@ export default class TicketScreen extends Component {
                           iconSize={20}
                           labelStyle={styles.fumiLabel}
                           inputStyle={styles.fumiInput}
-                          onChangeText={(text) => {this.props.updateTextField(text, 'whoMeets')}}/>
+                          onChangeText={(text) => {this.props.updateField(text, 'whoMeets')}}/>
                       {this.state.allFields &&
                           <View>
                           <Fumi
@@ -129,7 +134,7 @@ export default class TicketScreen extends Component {
                               iconSize={20}
                               labelStyle={styles.fumiLabel}
                               inputStyle={styles.fumiInput}
-                              onChangeText={(text) => {this.props.updateTextField(text, 'khimkiEmailMeeting')}}/>
+                              onChangeText={(text) => {this.props.updateField(text, 'khimkiEmailMeeting')}}/>
                           <Fumi
                               style={styles.fumiStyle}
                               label={'Телефон встречающего'}
@@ -139,7 +144,7 @@ export default class TicketScreen extends Component {
                               iconSize={20}
                               labelStyle={styles.fumiLabel}
                               inputStyle={styles.fumiInput}
-                              onChangeText={(text) => {this.props.updateTextField(text, 'phone')}}/>
+                              onChangeText={(text) => {this.props.updateField(text, 'phone')}}/>
                           </View>}
                   </View>
 
@@ -153,7 +158,7 @@ export default class TicketScreen extends Component {
                           iconSize={20}
                           labelStyle={styles.fumiLabel}
                           inputStyle={styles.fumiInput}
-                          onChangeText={this.props.updateCarModel}/>
+                          onChangeText={(text) => {this.props.updateField(text, 'carModel')}}/>
                       <Fumi
                           style={styles.fumiStyle}
                           label={'Номер автомобиля'}
@@ -163,25 +168,31 @@ export default class TicketScreen extends Component {
                           iconSize={20}
                           labelStyle={styles.fumiLabel}
                           inputStyle={styles.fumiInput}
-                          onChangeText={this.props.updateCarNumber}/>
+                          onChangeText={(text) => {this.props.updateField(text, 'carNumber')}}/>
                       <PickerComponent
-                          items={parkings}
                           label="Парковка"
                           idByIndex={idByIndex}
                           itemsByIndex={parkingsByIndex}
-                          onUpdate={this.props.updateParking}/>
+                          onUpdate={(text) => {this.props.updateField(text, 'parking')}}/>
                   </View>
 
                   <View style={styles.fieldsContainer}>
                       <DatePickerComponent
                             date={this.props.ticket.visitDate}
-                            onUpdate={this.props.updateVisitDate}
+                            onUpdate={(date) => {this.props.updateField(date, 'visitDate')}}
                             label="Дата посещения"
                             placeholder="Выберите дату"/>
+                      {!this.state.longTerm &&
+                        <PickerComponent
+                          label="Время"
+                          idByIndex={idByIndex}
+                          itemsByIndex={parkingsByIndex}
+                          onUpdate={(text) => {this.props.updateField(text, 'khimkiTime')}}/>
+                      }
                       {this.state.longTerm &&
                         <DatePickerComponent
                                 date={this.props.ticket.expirationDate}
-                                onUpdate={this.props.updateExpirationDate}
+                                onUpdate={(date) => {this.props.updateField(date, 'expirationDate')}}
                                 label="Дата окончания"
                                 placeholder="Выберите дату"
                                 />

@@ -25,7 +25,7 @@ export default MainComponent = (props) => {
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => { props.addCarTicket() }}>
+                    <TouchableOpacity onPress={() => { props.addVisitTicket() }}>
                         <View style={styles.Button}>
                             <Image resizeMode='contain' source={Images.car} style={styles.buttonImage} />
                             <Text style={styles.buttonLabel}>На гостя{"\n"}и парковку</Text>
@@ -37,19 +37,19 @@ export default MainComponent = (props) => {
 
                 <View style={styles.ButtonsContainer}>
 
-                      <TouchableOpacity onPress={() => { props.addGoodsTicket() }}>
+                    <TouchableOpacity onPress={() => { props.addGoodsTicket() }}>
                           <View style={styles.Button}>
                               <Image resizeMode='contain' source={Images.boxIn} style={styles.buttonImage} />
                               <Text style={styles.buttonLabel}>Ввоз/вывоз/перемещение</Text>
                           </View>
-                      </TouchableOpacity>
+                    </TouchableOpacity>
 
-                      <TouchableOpacity onPress={() => { props.addCardTicket() }}>
+                    <TouchableOpacity onPress={() => { props.addCardTicket() }}>
                         <View style={styles.Button}>
                           <Image resizeMode='contain' source={Images.card} style={styles.buttonImage} />
                           <Text style={styles.buttonLabel}>Получение/{"\n"}перевыпуск карты</Text>
                         </View>
-                      </TouchableOpacity>
+                    </TouchableOpacity>
 
                 </View>
 

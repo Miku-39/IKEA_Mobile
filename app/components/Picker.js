@@ -16,7 +16,7 @@ export default class PickerComponent extends React.Component {
      super(props);
      this.state = {
        selectedValue: null,
-       selectedParking: this.props.items[0].name
+       selectedItem: this.props.itemsByIndex[0]
      }
   }
 
@@ -26,17 +26,17 @@ export default class PickerComponent extends React.Component {
       <View>
       {
         Platform.OS === 'android' &&
-        <View style={{margin: 10}}>
+        <View style={{marginBottom: 10}}>
           <Text style={styles.pickerLabel}>{this.props.label}</Text>
           <View style={styles.picker}>
             <Picker
-                selectedValue={this.state.selectedParking}
+                selectedValue={this.state.selectedItem}
                 style={{height: 40, width: 180}}
                 onValueChange={(itemValue, itemIndex) =>{
                 this.props.onUpdate(itemValue, this.props.idByIndex[itemIndex]);
                 LayoutAnimation.spring();
-                this.setState({selectedParking: itemValue})}}>
-                {this.props.items.map(item => {return <Picker.Item label={item.name} value={item.name}/>})}
+                this.setState({selectedItem: itemValue})}}>
+                {this.props.itemsByIndex.map(item => {return item})}
             </Picker>
           </View>
         </View>
@@ -44,23 +44,23 @@ export default class PickerComponent extends React.Component {
 
       {
         Platform.OS === 'ios' &&
-        <View style={{margin: 10}}>
-        <Text style={styles.pickerLabel}>Парковка</Text>
+        <View style={{marginBottom: 10}}>
+        <Text style={styles.pickerLabel}>{this.props.label}</Text>
         <ReactNativePickerModule
                         pickerRef={e => pickerRef = e}
                         value={this.state.selectedValue}
                         title={this.props.label}
                         cancelButton='Отмена'
                         confirmButton='Выбрать'
-                        items={this.props.items.map(item => {return item.name})}
+                        items={this.props.itemsByIndex.map(item => {return item})}
                         onValueChange={(value) => {
                              this.props.onUpdate(this.props.itemsByIndex[value], this.props.idByIndex[value]);
                              LayoutAnimation.spring();
                              this.setState({selectedValue: value })
-                             this.setState({selectedParking: this.props.itemsByIndex[value]})
+                             this.setState({selectedItem: this.props.itemsByIndex[value]})
                         }}/>
         <TouchableOpacity onPress={() => {pickerRef.show()}} style={styles.picker}>
-          <Text style={styles.pickerText}>{this.state.selectedParking}</Text>
+          <Text style={styles.pickerText}>{this.state.selectedItem}</Text>
         </TouchableOpacity>
 
         </View>
