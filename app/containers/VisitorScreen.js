@@ -45,11 +45,11 @@ const headerButtonsHandler = { save: () => null }
 export default class VisitorScreen extends Component {
     static navigationOptions = ({navigation}) => {
         switch(navigation.state.params.ticketType){
-          case 'VISITOR':
-              headerTitle = 'Посетитель'
-              break;
           case 'CARD':
               headerTitle = 'Пропуск'
+              break;
+          default:
+              headerTitle = ''
               break;
         }
         return ({

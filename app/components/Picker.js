@@ -21,29 +21,24 @@ export default class PickerComponent extends React.Component {
   }
 
   render() {
-
-    return (
-      <View>
-      {
-        Platform.OS === 'android' &&
-        <View style={{marginBottom: 10}}>
-          <Text style={styles.pickerLabel}>{this.props.label}</Text>
-          <View style={styles.picker}>
-            <Picker
-                selectedValue={this.state.selectedItem}
-                style={{height: 40, width: 180}}
-                onValueChange={(itemValue, itemIndex) =>{
-                this.props.onUpdate(itemValue, this.props.idByIndex[itemIndex]);
-                LayoutAnimation.spring();
-                this.setState({selectedItem: itemValue})}}>
-                {this.props.itemsByIndex.map(item => {return item})}
+    if(Platform.OS == 'android'){
+      return (
+          <View style={{marginBottom: 10}}>
+            <Text style={styles.pickerLabel}>{this.props.label}</Text>
+            <View style={styles.picker}>
+              <Picker
+                  selectedValue={this.state.selectedItem}
+                  style={{height: 40, width: 180}}
+                  onValueChange={(itemValue, itemIndex) =>{
+                  this.props.onUpdate(itemValue, this.props.idByIndex[itemIndex]);
+                  LayoutAnimation.spring();
+                  this.setState({selectedItem: itemValue})}}>
+                  {this.props.itemsByIndex.map(item => {return <Picker.Item label={item} value={item}/>})}
             </Picker>
           </View>
-        </View>
-      }
-
-      {
-        Platform.OS === 'ios' &&
+          </View>
+    )} else {
+      return(
         <View style={{marginBottom: 10}}>
         <Text style={styles.pickerLabel}>{this.props.label}</Text>
         <ReactNativePickerModule
@@ -52,9 +47,9 @@ export default class PickerComponent extends React.Component {
                         title={this.props.label}
                         cancelButton='Отмена'
                         confirmButton='Выбрать'
-                        items={this.props.itemsByIndex.map(item => {return item})}
+                        items={this.props.itemsByIndex}
                         onValueChange={(value) => {
-                             this.props.onUpdate(this.props.itemsByIndex[value], this.props.idByIndex[value]);
+                             this.props.onUpdate(this.props.idByIndex[value]);
                              LayoutAnimation.spring();
                              this.setState({selectedValue: value })
                              this.setState({selectedItem: this.props.itemsByIndex[value]})
@@ -62,11 +57,8 @@ export default class PickerComponent extends React.Component {
         <TouchableOpacity onPress={() => {pickerRef.show()}} style={styles.picker}>
           <Text style={styles.pickerText}>{this.state.selectedItem}</Text>
         </TouchableOpacity>
-
         </View>
-        }
-        </View>
-    );
+    )}
   }
 }
 

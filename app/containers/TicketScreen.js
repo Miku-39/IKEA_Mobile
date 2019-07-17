@@ -47,6 +47,9 @@ export default class TicketScreen extends Component {
           case 'GOODS':
               headerTitle = 'Внос/вынос'
               break;
+          default:
+              headerTitle = ''
+              break;
         }
         return ({
             title: headerTitle,
@@ -71,9 +74,6 @@ export default class TicketScreen extends Component {
           case 'GOODS':
               ticketTypeId = GOODS_TICKET_TYPE;
               break;
-          case 'CARD':
-              ticketTypeId = CARD_TICKET_TYPE;
-                break;
         }
         const nowDate = new Date();
 
@@ -161,6 +161,15 @@ export default class TicketScreen extends Component {
     render = () => {
         const { ticket, ticketType, session} = this.state
         const { isAdding } = this.props
+        const times = [
+          { name: "8:00-10:00",  id: "4030991143000" },
+          { name: "10:00-12:00", id: "4030991147000" },
+          { name: "12:00-14:00", id: "4030991151000" },
+          { name: "14:00-16:00", id: "4030991158000" },
+          { name: "16:00-18:00", id: "4030991161000" },
+          { name: "8:00-18:00",  id: "4067716405000" },
+          { name: "После 20:00", id: "4067716412000" }
+        ]
         Text.defaultProps = Text.defaultProps || {};
         Text.defaultProps.allowFontScaling = false;
         return (
@@ -173,8 +182,8 @@ export default class TicketScreen extends Component {
 
                     ticketType={ticketType}
 
+                    times={times}
                     carParkings={session.carParkings}
-                    goodsParkings={session.goodsParkings}
                     services={session.services}
                 />
             </Loader>

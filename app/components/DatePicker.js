@@ -18,7 +18,7 @@ export default class DatePickerComponent extends React.Component {
       <View style={{marginBottom: 10}}>
           <Text style={styles.pickerLabel}>{this.props.label}</Text>
           <DatePicker
-              style={{width: 200, alignSelf: 'center'}}
+              style={{ alignSelf: 'center'}}
               date={this.props.date}
               mode="date"
               format="YYYY-MM-DD"
