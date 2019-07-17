@@ -145,7 +145,7 @@ export default class TicketScreen extends Component {
 
     updateField = (data, field) => {
       const { ticket } = this.state
-      ticket[field] = data
+      ticket[field] = data == '' ? null : data
       console.log('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
       console.log(ticket)
       this.setState({ticket})
@@ -183,7 +183,7 @@ export default class TicketScreen extends Component {
                     ticketType={ticketType}
 
                     times={times}
-                    carParkings={session.carParkings}
+                    carParkings={session.carParkings.map((item) => {return {name: item.name[0], id: item.id}})}
                     services={session.services}
                 />
             </Loader>

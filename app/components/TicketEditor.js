@@ -3,7 +3,6 @@ import {  View,
           ScrollView,
           Text,
           StyleSheet,
-          Picker,
           TouchableOpacity,
           Platform,
           NativeModules,
@@ -13,8 +12,7 @@ import { Fumi } from 'react-native-textinput-effects'
 import { CheckBox } from 'react-native-elements'
 import { Images, Colors } from '../theme'
 import DatePickerComponent from '../components/DatePicker'
-import PickerComponent from '../components/Picker'
-import ExampleApp from '../components/PickerAlternate'
+import PickerComponent from '../components/PickerAlternate'
 
 import ReactNativePickerModule from 'react-native-picker-module'
 
@@ -53,12 +51,6 @@ export default class TicketScreen extends Component {
 
 
   render () {
-    parkingsByIndex = this.props.carParkings.map(parking => {return parking.name})
-    timesByIndex = this.props.times.map(time => {return time.name})
-    idByIndex = this.props.carParkings.map(parking => {return parking.id})
-    timeIdByIndex = this.props.times.map(time => {return time.id})
-
-    androidMargin = Platform.OS === 'android' ? 7 : 0
     Text.defaultProps = Text.defaultProps || {};
     Text.defaultProps.allowFontScaling = true;
     return (
@@ -201,8 +193,7 @@ export default class TicketScreen extends Component {
                       {this.props.ticketType ==  "VISITOR" &&
                         <PickerComponent
                           label="Парковка"
-                          idByIndex={idByIndex}
-                          itemsByIndex={parkingsByIndex}
+                          items={this.props.carParkings}
                           onUpdate={(text) => {this.props.updateField(text, 'parking')}}/>
                       }
                   </View>
@@ -216,9 +207,9 @@ export default class TicketScreen extends Component {
                       {!this.state.longTerm &&
                         <PickerComponent
                           label="Время"
-                          idByIndex={timeIdByIndex}
-                          itemsByIndex={timesByIndex}
+                          items={this.props.times}
                           onUpdate={(text) => {this.props.updateField(text, 'khimkiTime')}}/>}
+
                       {this.state.longTerm &&
                         <DatePickerComponent
                                 date={this.props.ticket.expirationDate}
