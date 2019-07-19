@@ -52,7 +52,6 @@ export default class PickerComponent extends React.Component {
 const styles = StyleSheet.create({
   picker: {
     borderRadius: 20,
-    marginTop: 5,
     width: 200,
     height: 40,
     alignSelf: 'center',
@@ -62,6 +61,7 @@ const styles = StyleSheet.create({
   pickerLabel: {
     fontWeight: 'bold',
     color: Colors.textColor,
+    margin: 5,
     fontSize: 16,
     alignSelf: 'center',
     textAlign: 'center'

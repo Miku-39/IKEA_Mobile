@@ -56,7 +56,6 @@ export default class TicketsListItem extends React.PureComponent {
                </View>
              )
            }
-           console.log(item.type.id + ' ' + item.type.shortName)
            switch(item.type.id){
              case '393629549000':
              return (

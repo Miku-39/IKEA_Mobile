@@ -55,7 +55,13 @@ export default MainComponent = (props) => {
 
 
                 <View style={styles.ButtonsContainer}>
-
+                    <TouchableOpacity onPress={() => { props.addServiceTicket() }}>
+                        <View style={styles.Button}>
+                          <Image resizeMode='contain' source={Images.wrench} style={styles.buttonImage} />
+                          <Text style={styles.buttonLabel}>В инженерную{"\n"}службу</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <View style={{width:166}}/>
                 </View>
 
             </View>
@@ -92,18 +98,6 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 59
     },
-    menuIcon: {
-        paddingLeft: 14,
-        color: 'white'
-    },
-    title: {
-        fontSize: 22,
-        color: 'white'
-    },
-    settingsIcon: {
-        paddingRight: 4,
-        color: 'white'
-    },
     ButtonsContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around'
@@ -127,18 +121,5 @@ const styles = StyleSheet.create({
         fontSize: 18,
         margin: 5,
         textAlign: 'center'
-    },
-    touchableContainer: {
-        height: 40,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingLeft: 10,
-        paddingRight: 10
-    },
-    touchableLabel: {
-        textAlign: 'center',
-        fontWeight: 'bold',
-        color: Colors.text,
     }
 })

@@ -87,7 +87,7 @@ export default class TicketScreen extends Component {
                           labelStyle={styles.fumiLabel}
                           inputStyle={styles.fumiInput}
                           onChangeText={(text) => {this.props.updateField(text, 'visitorFullName')}}/>
-                      {this.state.allFields &&
+                      {(this.state.allFields && this.props.ticketType == 'VISITOR') &&
                           <View>
                           <Fumi
                               style={styles.fumiStyle}
@@ -113,7 +113,7 @@ export default class TicketScreen extends Component {
                       {this.props.ticketType == "VISITOR" &&
                           <Fumi
                           style={styles.fumiStyle}
-                          label={'ФИО встречающего'}
+                          label={'ФИО встречающего *'}
                           iconClass={Icon}
                           iconName={'person'}
                           iconColor={Colors.textColor}
@@ -125,7 +125,7 @@ export default class TicketScreen extends Component {
                       {this.props.ticketType == "GOODS" &&
                           <Fumi
                           style={styles.fumiStyle}
-                          label={'Компания-Поставщик'}
+                          label={'Компания-Поставщик *'}
                           iconClass={Icon}
                           iconName={'person'}
                           iconColor={Colors.textColor}
@@ -134,7 +134,7 @@ export default class TicketScreen extends Component {
                           inputStyle={styles.fumiInput}
                           onChangeText={(text) => {this.props.updateField(text, 'companyName')}}/>
                       }
-                      {this.state.allFields &&
+                      {(this.state.allFields && this.props.ticketType == 'VISITOR') &&
                           <View>
                           <Fumi
                               style={styles.fumiStyle}
@@ -180,7 +180,8 @@ export default class TicketScreen extends Component {
                           labelStyle={styles.fumiLabel}
                           inputStyle={styles.fumiInput}
                           onChangeText={(text) => {this.props.updateField(text, 'carNumber')}}/>
-                      <Fumi
+                      {this.state.allFields &&
+                        <Fumi
                           style={styles.fumiStyle}
                           label={'Место на парковке'}
                           iconClass={Icon}
@@ -190,11 +191,18 @@ export default class TicketScreen extends Component {
                           labelStyle={styles.fumiLabel}
                           inputStyle={styles.fumiInput}
                           onChangeText={(text) => {this.props.updateField(text, 'parkingPlace')}}/>
+                      }
                       {this.props.ticketType ==  "VISITOR" &&
                         <PickerComponent
                           label="Парковка"
                           items={this.props.carParkings}
                           onUpdate={(text) => {this.props.updateField(text, 'parking')}}/>
+                      }
+                      {this.props.ticketType == 'GOODS' &&
+                        <PickerComponent
+                          label="Тип заявки *"
+                          items={this.props.goodsTypes}
+                          onUpdate={(text) => {this.props.updateField(text, 'khimkiRequestType')}}/>
                       }
                   </View>
 
@@ -202,11 +210,11 @@ export default class TicketScreen extends Component {
                       <DatePickerComponent
                             date={this.props.ticket.visitDate}
                             onUpdate={(date) => {this.props.updateField(date, 'visitDate')}}
-                            label="Дата посещения"
+                            label="Дата посещения *"
                             placeholder="Выберите дату"/>
                       {!this.state.longTerm &&
                         <PickerComponent
-                          label="Время"
+                          label="Время *"
                           items={this.props.times}
                           onUpdate={(text) => {this.props.updateField(text, 'khimkiTime')}}/>}
 
@@ -214,7 +222,7 @@ export default class TicketScreen extends Component {
                         <DatePickerComponent
                                 date={this.props.ticket.expirationDate}
                                 onUpdate={(date) => {this.props.updateField(date, 'expirationDate')}}
-                                label="Дата окончания"
+                                label="Дата окончания *"
                                 placeholder="Выберите дату"
                                 />
                       }

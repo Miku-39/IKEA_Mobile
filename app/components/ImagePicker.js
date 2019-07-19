@@ -18,7 +18,6 @@ export default class ImagePickerComponent extends React.Component {
 
     if (!result.cancelled) {
       this.setState({ image: result.uri });
-      console.log(result.uri)
       this.props.onChoose(result.uri)
     }
   };

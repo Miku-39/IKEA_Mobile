@@ -18,9 +18,8 @@ import { getSession } from '../middleware/redux/selectors'
 import { storeCredentials, loadCredentials } from '../middleware/utils/AsyncStorage'
 const NEW_TICKET_STATUS_ID = '4285215000';
 
-const VISITOR_TICKET_TYPE = '393629546000';
 const CARD_TICKET_TYPE = '437149164000';
-
+const SERVICE_TICKET_TYPE = '3724900074000'
 const headerButtonsHandler = { save: () => null }
 
 
@@ -48,6 +47,9 @@ export default class VisitorScreen extends Component {
           case 'CARD':
               headerTitle = 'Пропуск'
               break;
+          case 'SERVICE':
+              headerTitle = 'Сервис'
+              break;
           default:
               headerTitle = ''
               break;
@@ -69,8 +71,8 @@ export default class VisitorScreen extends Component {
         const { ticketType } = this.props.navigation.state.params
         const { employeeId, companyId, session } = this.props
         switch(ticketType) {
-          case 'VISITOR':
-              ticketTypeId = VISITOR_TICKET_TYPE;
+          case 'SERVICE':
+              ticketTypeId = SERVICE_TICKET_TYPE;
               break;
           case 'CARD':
               ticketTypeId = CARD_TICKET_TYPE;
@@ -111,7 +113,7 @@ export default class VisitorScreen extends Component {
       }
 
       if (fileAdded){
-          this.addFileId(fileId)
+          this.updateField(fileId, 'photo')
           Alert.alert( '', 'Файл добавлен успешно',
           [{text: 'Закрыть', onPress: () => { }}])
           this.props.dismiss()
@@ -148,10 +150,10 @@ export default class VisitorScreen extends Component {
       this.setState({ticket})
     }
 
-    updateVisitor = text => {
-        const { ticket } = this.state
-        ticket.visitorFullName = text
-        this.setState({ticket})
+    updateField = (data, field) => {
+      const { ticket } = this.state
+      ticket[field] = data == '' ? null : data
+      this.setState({ticket})
     }
 
     render = () => {
@@ -164,7 +166,7 @@ export default class VisitorScreen extends Component {
             <Loader message='Сохранение' isLoading={isAdding || fileIsAdding}>
                 <VisitorTicketEditor
                     ticket={ticket}
-                    updateVisitor={this.updateVisitor}
+                    updateField={this.updateField}
                     saveFile={this.saveFile}
 
                     ticketType={ticketType}

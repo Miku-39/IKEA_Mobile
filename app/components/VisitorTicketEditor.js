@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, ScrollView, Text, StyleSheet, Picker, TouchableOpacity, Platform, Image } from 'react-native';
+import { View, ScrollView, TextInput, StyleSheet, Text, Platform, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { Fumi } from 'react-native-textinput-effects'
 import DatePicker from 'react-native-datepicker'
@@ -19,33 +19,55 @@ export default class VisitorScreen extends Component {
      }
   }
 
-  updateImage = (uri) => {
+  updateFile = (uri) => {
     this.props.saveFile(uri)
-    this.setState({image: uri})
+    //this.setState({image: uri})
   }
 
   render () {
-    androidMargin = Platform.OS === 'android' ? 7 : 0
     Text.defaultProps = Text.defaultProps || {};
     Text.defaultProps.allowFontScaling = true;
     return (
         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
             <ScrollView>
-                  <Fumi
-                      label={'ФИО посетителя'}
-                      iconClass={Icon}
-                      iconName={'person'}
-                      iconColor={'#53565A'}
-                      iconSize={20}
-                      inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
-                      onChangeText={this.props.updateVisitor}
+              {this.props.ticketType == 'SERVICE' &&
+                <View>
+                <Fumi
+                    label={'Место *'}
+                    iconClass={Icon}
+                    iconName={'room'}
+                    iconColor={'#53565A'}
+                    iconSize={20}
+                    inputStyle={styles.fumiInput}
+                    onChangeText={(text) => {this.props.updateField(text, 'whereHappened')}}
+                />
+                <TextInput
+                  placeholder="Что сделать"
+                  underlineColorAndroid='transparent'
+                  style={styles.textInputStyle}
+                  multiline={true}
+                  scrollEnabled={true}
+                  onChangeText={(text) => {this.props.updateField(text, 'whatHappened')}}
                   />
-              { this.props.ticketType == 'CARD' &&
-                  <ImagePickerComponent
-                    onChoose={this.updateImage}/>
+                </View>
               }
             </ScrollView>
       </View>
     )
   }
-}
+}const styles = StyleSheet.create({
+    fumiInput: {
+      color: '#53565A',
+     marginBottom: Platform.OS === 'android' ? 7 : 0
+   },
+   textInputStyle:{
+    height: 160,
+    borderRadius: 10,
+    backgroundColor : "#FFF",
+    marginTop: 10,
+    fontSize: 18,
+    color: '#53565A',
+    padding: 10,
+    paddingTop: 10
+  }
+})

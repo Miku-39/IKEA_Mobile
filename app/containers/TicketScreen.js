@@ -76,11 +76,11 @@ export default class TicketScreen extends Component {
               break;
         }
         const nowDate = new Date();
-
         const ticket = {
             visitorFullName: '',
             carModelText: '',
             carNumber: '',
+            parking: this.props.ticketType == 'GOODS' ? '4016242730000' : null,
             actualCreationDate: nowDate,
             visitDate: nowDate,
             expirationDate: nowDate,
@@ -135,8 +135,6 @@ export default class TicketScreen extends Component {
         }else{
           this.props.addTicket(ticket)
         }
-        console.log(ticket)
-
     }
 
     saveFile = (file) => {
@@ -146,8 +144,6 @@ export default class TicketScreen extends Component {
     updateField = (data, field) => {
       const { ticket } = this.state
       ticket[field] = data == '' ? null : data
-      console.log('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
-      console.log(ticket)
       this.setState({ticket})
     }
 
@@ -170,6 +166,11 @@ export default class TicketScreen extends Component {
           { name: "8:00-18:00",  id: "4067716405000" },
           { name: "После 20:00", id: "4067716412000" }
         ]
+        const goodsTypes = [
+          { name: "Ввоз",  id: "4022223527000" },
+          { name: "Вывоз", id: "4022223531000" },
+          { name: "Перемещение", id: "4022223559000" }
+        ]
         Text.defaultProps = Text.defaultProps || {};
         Text.defaultProps.allowFontScaling = false;
         return (
@@ -183,6 +184,7 @@ export default class TicketScreen extends Component {
                     ticketType={ticketType}
 
                     times={times}
+                    goodsTypes={goodsTypes}
                     carParkings={session.carParkings.map((item) => {return {name: item.name[0], id: item.id}})}
                     services={session.services}
                 />
