@@ -9,9 +9,10 @@ import { StackNavigator } from 'react-navigation'
 import store from './middleware/redux'
 import LoginScreen from './containers/LoginScreen'
 import MainScreen from './containers/MainScreen'
-import TicketScreen from './containers/TicketScreen'
 import TicketsScreen from './containers/TicketsScreen'
 import VisitorScreen from './containers/VisitorScreen'
+import ServiceScreen from './containers/ServiceScreen'
+import GoodsScreen from './containers/GoodsScreen'
 
 import api from './middleware/api'
 import { Metrics, Colors } from './theme'
@@ -27,8 +28,9 @@ const styles = StyleSheet.create({
 const Navigation = StackNavigator({
     Login: { screen: LoginScreen, navigationOptions: { header: null } },
     Main: { screen: MainScreen },
-    Ticket: { screen: TicketScreen },
+    Service: {screen: ServiceScreen },
     Visitor: { screen: VisitorScreen },
+    Goods: { screen: GoodsScreen },
     Tickets: { screen: TicketsScreen },
 }, {
     initialRouteName: 'Login',

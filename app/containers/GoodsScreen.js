@@ -2,26 +2,30 @@ import React, { Component } from 'react'
 import { View,
   Alert,
   TouchableOpacity,
-  Text
+  Text,
+  NativeModules,
+  LayoutAnimation
 } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
-import TicketEditor from '../components/TicketEditor'
+import GoodsTicketEditor from '../components/GoodsTicketEditor'
 import Loader from '../components/Loader'
 import * as selectors from '../middleware/redux/selectors'
 import { add, addFile, dismiss } from '../middleware/redux/actions/Ticket'
 
 import { getSession } from '../middleware/redux/selectors'
 import { storeCredentials, loadCredentials } from '../middleware/utils/AsyncStorage'
-const NEW_TICKET_STATUS_ID = '4285215000';
 
-const VISITOR_TICKET_TYPE = '393629546000';
-const CARD_TICKET_TYPE = '437149164000';
+const NEW_TICKET_STATUS_ID = '4285215000';
 const GOODS_TICKET_TYPE = '393629549000';
 
 const headerButtonsHandler = { save: () => null }
 
+const { UIManager } = NativeModules;
+
+UIManager.setLayoutAnimationEnabledExperimental &&
+  UIManager.setLayoutAnimationEnabledExperimental(true);
 
 @connect(
     store => ({
@@ -38,21 +42,10 @@ const headerButtonsHandler = { save: () => null }
         dismiss: () => dispatch(dismiss())
     })
 )
-export default class TicketScreen extends Component {
+export default class GoodsScreen extends Component {
     static navigationOptions = ({navigation}) => {
-        switch(navigation.state.params.ticketType){
-          case 'VISITOR':
-              headerTitle = 'Гость'
-              break;
-          case 'GOODS':
-              headerTitle = 'Внос/вынос'
-              break;
-          default:
-              headerTitle = ''
-              break;
-        }
         return ({
-            title: headerTitle,
+            title: 'Внос/Вынос',
             headerRight: (
                 <View style={{flexDirection: 'row', paddingRight: 7}}>
                     <TouchableOpacity onPress={() => headerButtonsHandler.save()}>
@@ -67,35 +60,26 @@ export default class TicketScreen extends Component {
     componentWillMount() {
         const { showCarFields, showGoodsFields, ticketType } = this.props.navigation.state.params
         const { employeeId, companyId, session } = this.props
-        switch(ticketType) {
-          case 'VISITOR':
-              ticketTypeId = VISITOR_TICKET_TYPE;
-              break;
-          case 'GOODS':
-              ticketTypeId = GOODS_TICKET_TYPE;
-              break;
-        }
         const nowDate = new Date();
         const ticket = {
             visitorFullName: '',
             carModelText: '',
             carNumber: '',
-            parking: this.props.ticketType == 'GOODS' ? '4016242730000' : null,
             actualCreationDate: nowDate,
             visitDate: nowDate,
-            expirationDate: nowDate,
             author: employeeId,
             status: NEW_TICKET_STATUS_ID,
-            type: ticketTypeId,
+            type: GOODS_TICKET_TYPE,
             client: companyId,
             nonstandardCarNumber: true,
             materialValuesData: '',
             longTerm: false
         }
+        const fieldsHighlights = {}
 
         this.setState({ticket: ticket, showCarFields: showCarFields,
            showGoodsFields: showGoodsFields,
-           ticketType: ticketType, session: session})
+           ticketType: ticketType, session: session, fieldsHighlights: fieldsHighlights})
     }
 
     componentDidMount() {
@@ -125,16 +109,31 @@ export default class TicketScreen extends Component {
     save = () => {
         const { ticket } = this.state
         const { ticketType } = this.props.navigation.state.params
+        var fieldsHighlights = {
+          materialValuesData: !ticket.materialValuesData,
+          companyName: !ticket.companyName,
+          khimkiRequestType: !ticket.khimkiRequestType,
+          khimkiTime: !ticket.khimkiTime,
+          expirationDate: (ticket.longTerm && !ticket.expirationDate)
+        }
 
-        if(!ticket.carNumber || !ticket.carModelText){
-          ticket.parking = null
-        }
-        if(!ticket.visitorFullName || !ticket.whoMeets){
-          Alert.alert( 'Ошибка', 'Не заполнены обязательные поля',
-          [{text: 'Закрыть', onPress: () => { }}])
-        }else{
+        var passed = true;
+        for (var i in fieldsHighlights) {
+            if (fieldsHighlights[i] === true) {
+                passed = false;
+                break;
+            }}
+
+        if(passed){
           this.props.addTicket(ticket)
+        }else{
+          Alert.alert('Не заполнены обязательные поля')
         }
+
+        LayoutAnimation.easeInEaseOut();
+        this.setState({'fieldsHighlights': fieldsHighlights})
+
+        console.log(this.state)
     }
 
     saveFile = (file) => {
@@ -143,14 +142,15 @@ export default class TicketScreen extends Component {
 
     updateField = (data, field) => {
       const { ticket } = this.state
-      ticket[field] = data == '' ? null : data
+      if(field == 'khimkiRequestType'){
+        ticket.parking = data == '4022223527000' ? '4016242730000' : null
+      }
+      if(field == 'longTerm'){
+        ticket.expirationDate = null
+      }
+      ticket[field] = data === '' ? null : data
+      console.log(ticket)
       this.setState({ticket})
-    }
-
-    updateLongTerm = check => {
-        const { ticket } = this.state
-        ticket.longTerm = check
-        this.setState({ticket})
     }
 
 
@@ -175,12 +175,12 @@ export default class TicketScreen extends Component {
         Text.defaultProps.allowFontScaling = false;
         return (
             <Loader message='Сохранение' isLoading={isAdding}>
-                <TicketEditor
+                <GoodsTicketEditor
                     ticket={ticket}
                     updateLongTerm={this.updateLongTerm}
                     updateField={this.updateField}
                     saveFile={this.saveFile}
-
+                    fieldsHighlights={this.state.fieldsHighlights}
                     ticketType={ticketType}
 
                     times={times}

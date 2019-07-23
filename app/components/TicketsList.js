@@ -4,14 +4,11 @@ import {
     Text,
     FlatList,
     StyleSheet,
-    TouchableHighlight,
-    Alert
+    TouchableHighlight
 } from 'react-native'
-import { Button } from 'react-native-elements'
-import { MaterialIcons } from '@expo/vector-icons'
 
 import TicketsListItem from '../components/TicketsListItem'
-import { Images, Colors } from '../theme'
+import { Colors } from '../theme'
 
 
 const extractKey = ({id}) => id
@@ -25,27 +22,34 @@ const status2colors = {
     '2804833189000': '#d12424',//Повторная
     '4285216000': '#808080',//Закрыта
 }
+const goodsTypes = {
+  '4022223559000': 'Перемещение',
+  '4022223531000': 'Вывоз',
+  '4022223527000': 'Ввоз'
+}
 
 export default class TicketsList extends React.PureComponent {
     renderItem = ({item}) => {
-              Text.defaultProps = Text.defaultProps || {};
-              Text.defaultProps.allowFontScaling = true;
-              const showDeclineReason = () => {
-              Alert.alert(
-                "Причина отклонения",
-                item.rejectionReason
-               )}
-                 if(item.type.shortName != 'Внос' && item.type.shortName != 'Вынос' && item.status.name == 'Отклонена'){
-                   return(
-                        <TouchableHighlight onPress={showDeclineReason} underlayColor="#909090">
-                        <TicketsListItem item={item} />
-                        </TouchableHighlight>
-                   )
-                 }else{
-                 return(
-                      <TicketsListItem item={item} />
-                 )
-               }
+      const header = item.number + ', ' + item.status.name.toString().toLowerCase()
+      const name = item.visitorFullName ? item.visitorFullName : ' '
+      var type = item.type.name && item.type.name + ' ' + item.visitDate.substr(0,10)
+      if(item.type.id == '393629549000'){ console.log(item); type = goodsTypes[item.KhimkiRequestType.id] + ' ' + item.visitDate.substr(0,10) }
+      return(
+      <View style={{width: '100%', marginBottom: 5}}>
+      <TouchableHighlight onPress={() => {return null}} underlayColor="#909090" style={{borderRadius: 10}}>
+      <View style={{flexDirection: 'row', backgroundColor: 'white', borderRadius: 10, height: 80}}>
+          <View style={{width: 10, backgroundColor: status2colors[item.status && item.status.id], borderRadius: 5}}></View>
+          <View style={{flexDirection: 'column', marginLeft: 5}}>
+
+              <Text style={styles.ticketNumber}>{header}</Text>
+              <Text style={styles.visitorName}>{name}</Text>
+              <Text style={styles.typeName}>{type}</Text>
+
+          </View>
+          </View>
+      </TouchableHighlight>
+      </View>
+    )
     }
 
     render() {
@@ -76,5 +80,18 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         backgroundColor: 'white'
-    }
+    },
+    ticketNumber:{
+      fontSize: 14,
+      color: Colors.textColor,
+      fontStyle: 'italic'
+    },
+    visitorName:{
+      fontSize: 20,
+      color: 'black'
+    },
+    typeName:{
+      fontSize: 14,
+      color: Colors.textColor
+    },
 })

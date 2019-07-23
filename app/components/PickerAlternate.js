@@ -31,17 +31,23 @@ export default class PickerComponent extends React.Component {
     return (
       <View style={{marginBottom: 10}}>
         <Text style={styles.pickerLabel}>{this.props.label}</Text>
-        <View style={styles.picker}>
+        <View style={[styles.picker, {
+        borderColor: this.props.isHighlighted ? Colors.accentColor : Colors.buttonColor,
+        borderRadius: this.props.isHighlighted ? 25 : 20,
+        height: this.props.isHighlighted ? 50 : 40,
+        width: this.props.isHighlighted ? 210 : 200,}]}>
           <Picker
-            style={{height: 40, width: 200}}
+            style={{height: this.props.isHighlighted ? 50 : 40,
+                    width: this.props.isHighlighted ? 210 : 200,}}
             onValueChange={this.handlePicker}
             items={this.data}
             title={this.props.label}
             placeholder="Выберите"
+            doneText='Выбрать'
             value={this.state.pickedData}
             onItemChange={(item) => {this.props.onUpdate(item.value)}}
             placeholderStyle={styles.pickerText}
-            androidPickerMode="dropdown"
+            //androidPickerMode="dropdown"
           />
         </View>
       </View>
@@ -51,12 +57,11 @@ export default class PickerComponent extends React.Component {
 
 const styles = StyleSheet.create({
   picker: {
-    borderRadius: 20,
-    width: 200,
-    height: 40,
     alignSelf: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.buttonColor
+    backgroundColor: Colors.buttonColor,
+    borderColor: Colors.buttonColor,
+    borderWidth: 5
   },
   pickerLabel: {
     fontWeight: 'bold',
@@ -67,6 +72,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   pickerText:{
+    marginBottom: 10,
     fontSize: 18,
     alignSelf: 'center',
     color: Colors.textColor

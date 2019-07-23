@@ -44,24 +44,13 @@ export default MainComponent = (props) => {
                           </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => { props.addCardTicket() }}>
-                        <View style={styles.Button}>
-                          <Image resizeMode='contain' source={Images.card} style={styles.buttonImage} />
-                          <Text style={styles.buttonLabel}>Получение/{"\n"}перевыпуск карты</Text>
-                        </View>
-                    </TouchableOpacity>
-
-                </View>
-
-
-                <View style={styles.ButtonsContainer}>
                     <TouchableOpacity onPress={() => { props.addServiceTicket() }}>
                         <View style={styles.Button}>
                           <Image resizeMode='contain' source={Images.wrench} style={styles.buttonImage} />
                           <Text style={styles.buttonLabel}>В инженерную{"\n"}службу</Text>
                         </View>
                     </TouchableOpacity>
-                    <View style={{width:166}}/>
+
                 </View>
 
             </View>

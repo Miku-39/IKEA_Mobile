@@ -77,15 +77,6 @@ class LoginComponent extends Component {
                         </View>
                     </KeyboardAvoidingView>
 
-                    <CheckBox
-                        title='Запомнить меня'
-                        onPress={this.props.changeRemember}
-                        containerStyle={styles.checkboxContainer}
-                        textStyle={styles.checkboxText}
-                        checkedColor='gray'
-                        checked={this.props.remember}
-                    />
-
                     <View style={styles.enterContainer}>
                         <TouchableOpacity onPress={() => {
                             Keyboard.dismiss()
@@ -185,7 +176,7 @@ const styles = StyleSheet.create({ // стили всех элементов
   },
   enterContainer: {
     alignItems: 'center',
-    marginBottom: 50
+    margin: 20
   },
   enterButton: { // кнопка
     justifyContent: 'center',
