@@ -132,8 +132,6 @@ export default class GoodsScreen extends Component {
 
         LayoutAnimation.easeInEaseOut();
         this.setState({'fieldsHighlights': fieldsHighlights})
-
-        console.log(this.state)
     }
 
     saveFile = (file, type, name) => {
@@ -149,7 +147,6 @@ export default class GoodsScreen extends Component {
         ticket.expirationDate = null
       }
       ticket[field] = data === '' ? null : data
-      console.log(ticket)
       this.setState({ticket})
     }
 

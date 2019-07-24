@@ -117,13 +117,16 @@ export default class TicketsScreen extends Component {
       const { navigation } = this.props
       const header = item.number + ', ' + item.status.name.toString().toLowerCase()
       const name = item.visitorFullName ? item.visitorFullName : ' '
-      var type = item.type.name && item.type.name + ' ' + item.visitDate.substr(0,10)
-      if((item.type.id == '393629549000') && item.KhimkiRequestType){ type = goodsTypes[item.KhimkiRequestType.id] + ' ' + item.visitDate.substr(0,10) }
-
+      try {
+      try{
+      var type = item.type && item.type.name + ' ' + item.visitDate.substring(0, 10)
+      if((item.type.id == '393629549000') && item.KhimkiRequestType){ type = goodsTypes[item.KhimkiRequestType.id] + ' ' + item.visitDate.substring(0, 10) }
+      }catch{ type = item.type && item.type.name + '' }
       return(
+
       <View style={{width: '100%', marginBottom: 5}}>
       <TouchableHighlight onPress={() => {navigation.navigate('Ticket', {ticket: item})}} underlayColor={Colors.accentColor} style={{borderRadius: 10}}>
-      <View style={{flexDirection: 'row', backgroundColor: 'white', borderRadius: 10, height: 80}}>
+      <View style={{flexDirection: 'row', backgroundColor: 'white', borderRadius: 10}}>
           <View style={{width: 10, backgroundColor: status2colors[item.status && item.status.id], borderRadius: 5}}></View>
           <View style={{flexDirection: 'column', marginLeft: 5}}>
 
@@ -135,10 +138,13 @@ export default class TicketsScreen extends Component {
           </View>
       </TouchableHighlight>
       </View>
-    )
+
+    )}catch{ return null }
     }
 
     render() {
+        Text.defaultProps = Text.defaultProps || {};
+        Text.defaultProps.allowFontScaling = true;
         const { navigation } = this.props
         const { items, searchBarIsShown } = this.state
         const { isFetching, fetched } = this.props.tickets
@@ -189,7 +195,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     ticketNumber:{
-      fontSize: 14,
+      fontSize: 18,
+      marginTop: 5,
+      marginBottom: 3,
       color: Colors.textColor,
       fontStyle: 'italic'
     },
@@ -198,7 +206,9 @@ const styles = StyleSheet.create({
       color: 'black'
     },
     typeName:{
-      fontSize: 14,
+      fontSize: 18,
+      marginTop: 3,
+      marginBottom: 5,
       color: Colors.textColor
     },
 })

@@ -50,19 +50,8 @@ UIManager.setLayoutAnimationEnabledExperimental &&
 )
 export default class ServiceScreen extends Component {
     static navigationOptions = ({navigation}) => {
-        switch(navigation.state.params.ticketType){
-          case 'CARD':
-              headerTitle = 'Пропуск'
-              break;
-          case 'SERVICE':
-              headerTitle = 'Сервис'
-              break;
-          default:
-              headerTitle = ''
-              break;
-        }
         return ({
-            title: headerTitle,
+            title: 'Сервис',
             headerRight: (
                 <View style={{flexDirection: 'row', paddingRight: 7}}>
                     <TouchableOpacity onPress={() => headerButtonsHandler.save()}>

@@ -3,12 +3,12 @@
     "sdkVersion": "32.0.0",
     "name": "Кларис. Химки",
     "icon": "./app/theme/images/claris_service_desk-logo.png",
-    "version": "2.8",
+    "version": "1.0",
     "slug": "claris-khimki",
     "ios": {
       "bundleIdentifier": "ru.altsoft.saas.khimki",
       "icon": "./app/theme/images/appstorelogo2.png",
-      "buildNumber": "2.8"
+      "buildNumber": "1.0"
     },
     "splash": {
       "image": "./app/theme/images/Khimki.png",
@@ -16,7 +16,7 @@
     },
     "android": {
       "package": "ru.altsoft.saas.khimki",
-      "versionCode": 13,
+      "versionCode": 1,
       "permissions": [
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE",
@@ -26,6 +26,10 @@
         "CAMERA_ROLL"
       ]
     },
-    "description": ""
+    "description": "",
+    "platforms": [
+      "android",
+      "ios"
+    ]
   }
 }

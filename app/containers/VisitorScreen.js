@@ -127,7 +127,6 @@ export default class VisitorScreen extends Component {
           Alert.alert('Не заполнены обязательные поля')
         }
         this.setState({'fieldsHighlights': fieldsHighlights})
-        console.log(this.state)
         LayoutAnimation.easeInEaseOut();
     }
 
@@ -138,7 +137,6 @@ export default class VisitorScreen extends Component {
     updateField = (data, field) => {
       const { ticket } = this.state
       ticket[field] = data === '' ? null : data
-      console.log(ticket)
       this.setState({ticket})
     }
 

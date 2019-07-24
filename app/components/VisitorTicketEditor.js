@@ -11,7 +11,7 @@ import {  View,
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { Fumi } from 'react-native-textinput-effects'
 import { CheckBox } from 'react-native-elements'
-import { Images, Colors } from '../theme'
+import { Colors } from '../theme'
 import DatePickerComponent from '../components/DatePicker'
 import PickerComponent from '../components/PickerAlternate'
 
@@ -73,7 +73,6 @@ export default class VisitorTicketEditor extends Component {
 
     fields['fieldsVisible'] = fieldsVisible
     this.setState(fields);
-    console.log(fields)
   }
 
   render () {
@@ -207,6 +206,19 @@ export default class VisitorTicketEditor extends Component {
                           items={this.props.carParkings}
                           onUpdate={(text) => {this.updateField(text, 'parking')}}/>
 
+                  </View>
+                }
+
+                {this.state.additionalFieldsVisible &&
+                  <View style={styles.fieldsContainer}>
+                    <TextInput
+                      placeholder="Примечание"
+                      underlineColorAndroid='transparent'
+                      style={styles.textInputStyle}
+                      multiline={true}
+                      scrollEnabled={true}
+                      onChangeText={(text) => {this.props.updateField(text, 'note')}}
+                      />
                   </View>
                 }
 

@@ -11,7 +11,7 @@ import {  View,
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { Fumi } from 'react-native-textinput-effects'
 import { CheckBox } from 'react-native-elements'
-import { Images, Colors } from '../theme'
+import { Colors } from '../theme'
 import DatePickerComponent from '../components/DatePicker'
 import PickerComponent from '../components/PickerAlternate'
 
@@ -49,7 +49,6 @@ export default class GoodsTicketEditor extends Component {
   updateField = (data, field) => {
     this.props.updateField(data, field);
     LayoutAnimation.easeInEaseOut();
-    console.log(data)
     fields = this.state
     fields[field] = data
 
@@ -61,8 +60,6 @@ export default class GoodsTicketEditor extends Component {
 
     fields['fieldsVisible'] = fieldsVisible
     this.setState(fields);
-    console.log(fields)
-    console.log(this.state.fieldsVisible);
   }
 
   render () {

@@ -7,7 +7,7 @@ import ReactNativePickerModule from 'react-native-picker-module'
 import { CheckBox } from 'react-native-elements'
 import DatePickerComponent from '../components/DatePicker'
 
-import { Images, Colors } from '../theme'
+import { Colors } from '../theme'
 
 export default class ServiceScreen extends Component {
   constructor(props) {
