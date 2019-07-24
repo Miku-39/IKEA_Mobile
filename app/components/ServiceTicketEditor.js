@@ -6,7 +6,6 @@ import DatePicker from 'react-native-datepicker'
 import ReactNativePickerModule from 'react-native-picker-module'
 import { CheckBox } from 'react-native-elements'
 import DatePickerComponent from '../components/DatePicker'
-import ImagePickerComponent from '../components/ImagePicker'
 
 import { Images, Colors } from '../theme'
 
@@ -30,7 +29,6 @@ export default class ServiceScreen extends Component {
     return (
         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
             <ScrollView>
-              {this.props.ticketType == 'SERVICE' &&
                 <View>
                 <Fumi
                     style={[styles.fumiStyle, {borderColor: this.props.fieldsHighlights.whereHappened ? Colors.accentColor : '#FFF'}]}
@@ -51,7 +49,7 @@ export default class ServiceScreen extends Component {
                   onChangeText={(text) => {this.props.updateField(text, 'whatHappened')}}
                   />
                 </View>
-              }
+
             </ScrollView>
       </View>
     )

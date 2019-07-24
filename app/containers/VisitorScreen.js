@@ -38,7 +38,7 @@ UIManager.setLayoutAnimationEnabledExperimental &&
     }),
     dispatch => ({
         addTicket: (ticket) => dispatch(add(ticket)),
-        addFile: (file) => dispatch(addFile(file)),
+        addFile: (file, type, name) => dispatch(addFile(file, type, name)),
         dismiss: () => dispatch(dismiss())
     })
 )
@@ -131,8 +131,8 @@ export default class VisitorScreen extends Component {
         LayoutAnimation.easeInEaseOut();
     }
 
-    saveFile = (file) => {
-        this.props.addFile(file)
+    saveFile = (file, type, name) => {
+        this.props.addFile(file, type, name)
     }
 
     updateField = (data, field) => {

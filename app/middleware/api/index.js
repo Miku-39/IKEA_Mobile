@@ -37,12 +37,12 @@ const login = (user, password) =>  {
   return instance.post('/token', body, conf).catch(onError)
 }
 
-const addFile = (uri) =>  {
+const addFile = (uri, type, name) =>  {
     let bodyFormData = new FormData()
     bodyFormData.append("file", {
       uri: uri,
-      type: "image/jpeg", // or photo.type
-      name: "MobileApp.jpg"
+      type: type, // or photo.type
+      name: name
     });
     return instance.post("/vNext/v1/files", bodyFormData, { headers: {'Content-Type': 'multipart/form-data' }} );
 }

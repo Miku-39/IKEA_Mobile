@@ -44,7 +44,7 @@ UIManager.setLayoutAnimationEnabledExperimental &&
     }),
     dispatch => ({
         addTicket: (ticket) => dispatch(add(ticket)),
-        addFile: (file) => dispatch(addFile(file)),
+        addFile: (file, type, name) => dispatch(addFile(file, type, name)),
         dismiss: () => dispatch(dismiss())
     })
 )
@@ -109,7 +109,7 @@ export default class ServiceScreen extends Component {
       const { goBack } = this.props.navigation
 
       if (added){
-          Alert.alert( '', 'Заявка добавлена успешно',
+          Alert.alert( 'Заявка добавлена успешно', '',
           [{text: 'Закрыть', onPress: () => { goBack() }}])
           this.props.dismiss()
       }
@@ -121,7 +121,7 @@ export default class ServiceScreen extends Component {
 
       if (fileAdded){
           this.updateField(fileId, 'photo')
-          Alert.alert( '', 'Файл добавлен успешно',
+          Alert.alert( 'Файл добавлен успешно', '',
           [{text: 'Закрыть', onPress: () => { }}])
           this.props.dismiss()
       }
@@ -146,7 +146,7 @@ export default class ServiceScreen extends Component {
         if(passed){
           this.props.addTicket(ticket)
         }else{
-          Alert.alert('Не заполнены обязательные поля')
+          Alert.alert('Заполните обязательные поля')
         }
 
         LayoutAnimation.easeInEaseOut();
@@ -154,8 +154,8 @@ export default class ServiceScreen extends Component {
 
     }
 
-    saveFile = (file) => {
-        this.props.addFile(file)
+    saveFile = (file, type, name) => {
+        this.props.addFile(file, type, name)
     }
 
     addFileId = (fileId) => {
