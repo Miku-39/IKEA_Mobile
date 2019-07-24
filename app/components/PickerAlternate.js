@@ -1,9 +1,17 @@
 import { Picker } from 'react-native-woodpicker'
 import React from 'react';
+import {  View,
+          StyleSheet,
+          Text,
+          NativeModules } from 'react-native';
+import { Colors } from '../theme'
 
-[...]
+const { UIManager } = NativeModules;
 
-export default class ExampleApp extends React.Component {
+UIManager.setLayoutAnimationEnabledExperimental &&
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+
+export default class PickerComponent extends React.Component {
   constructor(props) {
      super(props);
   }
@@ -12,31 +20,61 @@ export default class ExampleApp extends React.Component {
     pickedData: null
   };
 
-  data = [
-    { label: "DataCat", value: 1 },
-    { label: "DataDog", value: 2 },
-    { label: "DataSnake", value: 3 },
-    { label: "DataPlatypus", value: 4 },
-    { label: "DataWhale", value: 5 }
-  ];
+  data = [{label: 'Не выбрано', value: ''}].concat(this.props.items.map(item => {return {label: item.name, value: item.id}}))
 
   handlePicker = data => {
+    LayoutAnimation.easeInEaseOut()
     this.setState({ pickedData: data });
   };
 
   render() {
     return (
-      <View>
-        <Picker
-          onValueChange={this.handlePicker}
-          items={this.data}
-          title="Data Picker"
-          placeholder="Select Data"
-          value={this.state.pickedData}
-          //androidPickerMode="dropdown"
-          //isNullable
-        />
+      <View style={{marginBottom: 10}}>
+        <Text style={styles.pickerLabel}>{this.props.label}</Text>
+        <View style={[styles.picker, {
+        borderColor: this.props.isHighlighted ? Colors.accentColor : Colors.buttonColor,
+        borderRadius: this.props.isHighlighted ? 25 : 20,
+        height: this.props.isHighlighted ? 50 : 40,
+        width: this.props.isHighlighted ? 210 : 200,}]}>
+          <Picker
+            style={{height: this.props.isHighlighted ? 50 : 40,
+                    width: this.props.isHighlighted ? 210 : 200,}}
+            onValueChange={this.handlePicker}
+            items={this.data}
+            title={this.props.label}
+            placeholder="Выберите"
+            doneText='Выбрать'
+            value={this.state.pickedData}
+            onItemChange={(item) => {this.props.onUpdate(item.value)}}
+            placeholderStyle={styles.pickerText}
+            //androidPickerMode="dropdown"
+          />
+        </View>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  picker: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.buttonColor,
+    borderColor: Colors.buttonColor,
+    borderWidth: 5
+  },
+  pickerLabel: {
+    fontWeight: 'bold',
+    color: Colors.textColor,
+    margin: 5,
+    fontSize: 16,
+    alignSelf: 'center',
+    textAlign: 'center'
+  },
+  pickerText:{
+    marginBottom: 10,
+    fontSize: 18,
+    alignSelf: 'center',
+    color: Colors.textColor
+   }
+})

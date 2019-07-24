@@ -9,7 +9,7 @@ import { View,
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
-import VisitorTicketEditor from '../components/VisitorTicketEditor'
+import GoodsTicketEditor from '../components/GoodsTicketEditor'
 import Loader from '../components/Loader'
 import * as selectors from '../middleware/redux/selectors'
 import { add, addFile, dismiss } from '../middleware/redux/actions/Ticket'
@@ -18,7 +18,7 @@ import { getSession } from '../middleware/redux/selectors'
 import { storeCredentials, loadCredentials } from '../middleware/utils/AsyncStorage'
 
 const NEW_TICKET_STATUS_ID = '4285215000';
-const VISITOR_TICKET_TYPE = '393629546000';
+const GOODS_TICKET_TYPE = '393629549000';
 
 const headerButtonsHandler = { save: () => null }
 
@@ -42,10 +42,10 @@ UIManager.setLayoutAnimationEnabledExperimental &&
         dismiss: () => dispatch(dismiss())
     })
 )
-export default class VisitorScreen extends Component {
+export default class GoodsScreen extends Component {
     static navigationOptions = ({navigation}) => {
         return ({
-            title: 'Гость',
+            title: 'Внос/Вынос',
             headerRight: (
                 <View style={{flexDirection: 'row', paddingRight: 7}}>
                     <TouchableOpacity onPress={() => headerButtonsHandler.save()}>
@@ -67,17 +67,18 @@ export default class VisitorScreen extends Component {
             carNumber: '',
             actualCreationDate: nowDate,
             visitDate: nowDate,
-            expirationDate: nowDate,
             author: employeeId,
             status: NEW_TICKET_STATUS_ID,
-            type: VISITOR_TICKET_TYPE,
+            type: GOODS_TICKET_TYPE,
             client: companyId,
             nonstandardCarNumber: true,
+            materialValuesData: '',
             longTerm: false
         }
         const fieldsHighlights = {}
 
         this.setState({ticket: ticket, showCarFields: showCarFields,
+           showGoodsFields: showGoodsFields,
            ticketType: ticketType, session: session, fieldsHighlights: fieldsHighlights})
     }
 
@@ -109,9 +110,11 @@ export default class VisitorScreen extends Component {
         const { ticket } = this.state
         const { ticketType } = this.props.navigation.state.params
         var fieldsHighlights = {
+          materialValuesData: !ticket.materialValuesData,
+          companyName: !ticket.companyName,
+          khimkiRequestType: !ticket.khimkiRequestType,
           khimkiTime: !ticket.khimkiTime,
-          expirationDate: (ticket.longTerm && !ticket.expirationDate),
-          whoMeets: !ticket.whoMeets,
+          expirationDate: (ticket.longTerm && !ticket.expirationDate)
         }
 
         var passed = true;
@@ -126,8 +129,9 @@ export default class VisitorScreen extends Component {
         }else{
           Alert.alert('Не заполнены обязательные поля')
         }
-        this.setState({'fieldsHighlights': fieldsHighlights})
+
         LayoutAnimation.easeInEaseOut();
+        this.setState({'fieldsHighlights': fieldsHighlights})
     }
 
     saveFile = (file, type, name) => {
@@ -136,14 +140,14 @@ export default class VisitorScreen extends Component {
 
     updateField = (data, field) => {
       const { ticket } = this.state
+      if(field == 'khimkiRequestType'){
+        ticket.parking = data == '4022223527000' ? '4016242730000' : null
+      }
+      if(field == 'longTerm'){
+        ticket.expirationDate = null
+      }
       ticket[field] = data === '' ? null : data
       this.setState({ticket})
-    }
-
-    updateLongTerm = check => {
-        const { ticket } = this.state
-        ticket.longTerm = check
-        this.setState({ticket})
     }
 
 
@@ -159,11 +163,16 @@ export default class VisitorScreen extends Component {
           { name: "8:00-18:00",  id: "4067716405000" },
           { name: "После 20:00", id: "4067716412000" }
         ]
+        const goodsTypes = [
+          { name: "Ввоз",  id: "4022223527000" },
+          { name: "Вывоз", id: "4022223531000" },
+          { name: "Перемещение", id: "4022223559000" }
+        ]
         Text.defaultProps = Text.defaultProps || {};
         Text.defaultProps.allowFontScaling = false;
         return (
             <Loader message='Сохранение' isLoading={isAdding}>
-                <VisitorTicketEditor
+                <GoodsTicketEditor
                     ticket={ticket}
                     updateLongTerm={this.updateLongTerm}
                     updateField={this.updateField}
@@ -172,6 +181,7 @@ export default class VisitorScreen extends Component {
                     ticketType={ticketType}
 
                     times={times}
+                    goodsTypes={goodsTypes}
                     carParkings={session.carParkings.map((item) => {return {name: item.name[0], id: item.id}})}
                     services={session.services}
                 />

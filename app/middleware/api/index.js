@@ -2,7 +2,6 @@ import axios from 'axios'
 import querystring from 'querystring'
 
 export const API_SERVER_URL = 'http://api.claris.su/main/'
-//export const FILE_SERVER_URL = 'https://saas.claris.su/UserSettings/9323/Docs/'
 
 const conf = {
     baseURL: API_SERVER_URL,
@@ -38,16 +37,12 @@ const login = (user, password) =>  {
   return instance.post('/token', body, conf).catch(onError)
 }
 
-const addFile = (uri) =>  {
-//  const conf = { headers: { 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryfYmc9zCbpTtmSCuM',
-//                            'Accept': 'application/json'}}
-//  const body = `${file}`
-//  return instance.post('/vNext/v1/files', body, conf).catch(onError)
+const addFile = (uri, type, name) =>  {
     let bodyFormData = new FormData()
     bodyFormData.append("file", {
       uri: uri,
-      type: "image/jpeg", // or photo.type
-      name: "MobileApp.jpg"
+      type: type, // or photo.type
+      name: name
     });
     return instance.post("/vNext/v1/files", bodyFormData, { headers: {'Content-Type': 'multipart/form-data' }} );
 }
@@ -55,28 +50,16 @@ const addFile = (uri) =>  {
 const authorize = () => instance.get('/vNext/v1/users/current')
 const setAuthHeader = (token) => instance.defaults.headers.authorization = `Bearer ${token}`
 
-const fetchTicketsForCheckpoint = userId => instance.get(`/vnext/v1/requests?orderBy=carNumber&filters=RequestsForCheckpoint,CurrentDayRequests&pageSize=500&pageNumber=1`).catch(onError)
-//const fetchTicketsForSecurityChief = userId => instance.get(`/vNext/v1/requests?filters=RequestsForBolshevikSecurityChief,CurrentDayRequests&pageSize=500&pageNumber=1&orderBy=Number*-1`).catch(onError)
 const fetchParkingsForCars = () => instance.get(`/vNext/v1/parkings`).catch(onError)
 const fetchParkingsForGoods = () => instance.get(`/vNext/v1/parkings`).catch(onError)
-//const fetchServices = () => instance.get(`/vNext/v1/services?filterBy=IsNeoGeo=true`).catch(onError)
 const fetchAllTickets = companyId => {
-    const conf = {
-        params: {
-            OrderBy: 'ActualCreationDate desc',
-            filterBy: `company.Id="${companyId}"`,
-            pageSize: 500,
-            pageNumber: 1
-        }
-    }
-
-    return instance.get('/vNext/v1/requests', conf).catch(onError)
+return instance.get('vNext/v1/requests?orderBy=number+desc', conf).catch(onError)
 }
 
 const updateTicketStatus = (ticket) => instance.patch(`/vnext/v1/requests/${ticket.id}`, {status: ticket.status})
 
 const addTicket = (ticket) => instance.post('/vNext/v1/requests', ticket).catch(onError)
 
-export default { login, authorize, setAuthHeader, fetchTicketsForCheckpoint,
+export default { login, authorize, setAuthHeader,
                  fetchParkingsForCars, fetchParkingsForGoods, fetchAllTickets, updateTicketStatus,
                  addTicket, addFile }
