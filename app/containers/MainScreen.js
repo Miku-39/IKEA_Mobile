@@ -6,7 +6,7 @@ import MainComponent from '../components/MainComponent'
 export default class MainScreenContainer extends Component {
     static navigationOptions = ({navigation}) => {
         return ({
-            title: 'Кларис'
+            title: 'Химки Бизнес Парк'
         })
     }
 

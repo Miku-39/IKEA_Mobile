@@ -8,7 +8,7 @@ const fieldsProperties = [
   type:               { name: 'Вид', type: 'list' },
   khimkiRequestType:  { name: 'Тип', type: 'list' },
   visitDate:          { name: 'Дата', type: 'date' },
-  expirationDate:     { name: 'Дата окончания', type: 'date' },
+  expirationDate:     { name: 'Действует до', type: 'date' },
   khimkiTime:         { name: 'Время', type: 'list' }
 }, {
   visitorFullName:    { name: 'ФИО посетителя', type: 'text' },
@@ -28,10 +28,10 @@ const fieldsProperties = [
   materialValuesData: { name: 'Данные материальных ценностей', type: 'text' },
   khimkiAccessPremises:{ name: 'Маршрут перемещения', type: 'text' }
 }, {
-  note:               { name: 'Примечание', type: 'text' }
-}, {
-  whatHappened:       { name: 'Что сделать', type: 'text' },
   whereHappened:      { name: 'Место', type: 'text' },
+  whatHappened:       { name: 'Что сделать', type: 'text' }
+}, {
+  note:               { name: 'Примечание', type: 'text' }
 }
 ]
 

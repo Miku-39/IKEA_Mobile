@@ -1,12 +1,12 @@
 {
   "expo": {
     "sdkVersion": "32.0.0",
-    "name": "Кларис. Химки",
+    "name": "Химки Бизнес Парк",
     "icon": "./app/theme/images/claris_service_desk-logo.png",
     "version": "1.0",
-    "slug": "claris-khimki",
+    "slug": "khimki-mobile",
     "ios": {
-      "bundleIdentifier": "ru.altsoft.saas.khimki",
+      "bundleIdentifier": "ru.altsoft.saas.khimkimobile",
       "icon": "./app/theme/images/appstorelogo2.png",
       "buildNumber": "1.0"
     },

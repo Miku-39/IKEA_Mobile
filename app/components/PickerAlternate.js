@@ -21,7 +21,6 @@ export default class PickerComponent extends React.Component {
   };
 
   data = [{label: 'Не выбрано', value: ''}].concat(this.props.items.map(item => {return {label: item.name, value: item.id}}))
-
   handlePicker = data => {
     LayoutAnimation.easeInEaseOut()
     this.setState({ pickedData: data });
@@ -29,7 +28,7 @@ export default class PickerComponent extends React.Component {
 
   render() {
     return (
-      <View style={{marginBottom: 10}}>
+      <View style={{margin: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
         <Text style={styles.pickerLabel}>{this.props.label}</Text>
         <View style={[styles.picker, {
         borderColor: this.props.isHighlighted ? Colors.accentColor : Colors.buttonColor,
@@ -61,7 +60,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: Colors.buttonColor,
     borderColor: Colors.buttonColor,
-    borderWidth: 5
+    borderWidth: 5,
+    marginRight: 10
   },
   pickerLabel: {
     fontWeight: 'bold',

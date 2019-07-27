@@ -6,7 +6,8 @@ import { View,
   TouchableOpacity,
   Text,
   NativeModules,
-  LayoutAnimation
+  LayoutAnimation,
+  Keyboard
 } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -44,21 +45,23 @@ UIManager.setLayoutAnimationEnabledExperimental &&
     }),
     dispatch => ({
         addTicket: (ticket) => dispatch(add(ticket)),
-        addFile: (file, type, name) => dispatch(addFile(file, type, name)),
+        addFile: (file) => dispatch(addFile(file)),
         dismiss: () => dispatch(dismiss())
     })
 )
 export default class ServiceScreen extends Component {
     static navigationOptions = ({navigation}) => {
         return ({
-            title: 'Сервис',
+            title: 'Новая заявка',
             headerRight: (
                 <View style={{flexDirection: 'row', paddingRight: 7}}>
                     <TouchableOpacity onPress={() => headerButtonsHandler.save()}>
                         <Icon name='check' color='#FFF' size={30}/>
                     </TouchableOpacity>
                 </View>
-            )
+            ),
+            headerLeft: (<Icon name='chevron-left' color='#FFF' size={40} onPress={ () => { navigation.goBack() } }/> )
+
         })
     }
 
@@ -109,10 +112,8 @@ export default class ServiceScreen extends Component {
       }
 
       if (fileAdded){
-          this.updateField(fileId, 'photo')
-          Alert.alert( 'Файл добавлен успешно', '',
-          [{text: 'Закрыть', onPress: () => { }}])
-          this.props.dismiss()
+          this.updateField(fileId, 'file')
+          Alert.alert( 'Файл добавлен успешно')
       }
     }
 
@@ -125,6 +126,7 @@ export default class ServiceScreen extends Component {
           whereHappened: !ticket.whereHappened
         }
 
+        Keyboard.dismiss()
         var passed = true;
         for (var i in fieldsHighlights) {
             if (fieldsHighlights[i] === true) {
@@ -143,8 +145,8 @@ export default class ServiceScreen extends Component {
 
     }
 
-    saveFile = (file, type, name) => {
-        this.props.addFile(file, type, name)
+    saveFile = (file) => {
+        this.props.addFile(file)
     }
 
     addFileId = (fileId) => {

@@ -84,6 +84,40 @@ export default class VisitorTicketEditor extends Component {
                 <View style={{
                   flexDirection: 'column',
                   marginBottom: 150}}>
+
+                  <View style={styles.fieldsContainer}>
+                    <Text style={styles.field}>На гостя и парковку</Text>
+                  </View>
+
+                  <View style={styles.fieldsContainer}>
+                      <DatePickerComponent
+                        date={this.props.ticket.visitDate}
+                        onUpdate={(date) => {this.updateField(date, 'visitDate')}}
+                        label="Дата *"
+                        placeholder="Выберите дату"/>
+                      <PickerComponent
+                        isHighlighted={this.props.fieldsHighlights.khimkiTime}
+                        label="Время *"
+                        items={this.props.times}
+                        onUpdate={(text) => {this.updateField(text, 'khimkiTime')}}/>
+                      <CheckBox
+                        title='Долгосрочная'
+                        containerStyle={styles.checkboxContainer}
+                        textStyle={styles.checkboxText}
+                        checked={this.state.longTerm}
+                        checkedColor={Colors.textColor}
+                        onPress={() => {this.setVisible('longTerm')}}/>
+                      {this.state.longTerm &&
+                      <DatePickerComponent
+                        isHighlighted={this.props.fieldsHighlights.expirationDate}
+                        date={this.props.ticket.expirationDate ? this.props.ticket.expirationDate : new Date()}
+                        onUpdate={(date) => {this.updateField(date, 'expirationDate')}}
+                        label="Действует до *"
+                        placeholder="Выберите дату"
+                        />
+                      }
+                  </View>
+
                   <View style={styles.fieldsContainer}>
                       <CheckBox
                         title='Дополнительные поля'
@@ -93,8 +127,8 @@ export default class VisitorTicketEditor extends Component {
                         checkedColor={Colors.textColor}
                         onPress={() => {this.setVisible('additionalFieldsVisible')}}/>
                       <Fumi
-                          style={styles.fumiStyle}
-                          label={'ФИО посетителя'}
+                          style={[styles.fumiStyle, {borderColor: this.props.fieldsHighlights.visitorFullName ? Colors.accentColor : '#FFF'}]}
+                          label={'ФИО посетителя *'}
                           iconClass={Icon}
                           iconName={'person'}
                           iconColor={Colors.textColor}
@@ -160,17 +194,18 @@ export default class VisitorTicketEditor extends Component {
                               inputStyle={styles.fumiInput}
                               onChangeText={(text) => {this.updateField(text, 'phone')}}/>
                           </View>}
+                  </View>
 
+                  <View style={styles.fieldsContainer}>
                       <CheckBox
-                        title='Поля авто'
+                        title='Автомобиль'
                         containerStyle={styles.checkboxContainer}
                         textStyle={styles.checkboxText}
                         checked={this.state.carFieldsVisible}
                         checkedColor={Colors.textColor}
                         onPress={() => {this.setVisible('carFieldsVisible')}}/>
-                  </View>
                   {this.state.carFieldsVisible &&
-                  <View style={styles.fieldsContainer}>
+                      <View>
                       <Fumi
                           style={styles.fumiStyle}
                           label={'Марка автомобиля'}
@@ -195,7 +230,7 @@ export default class VisitorTicketEditor extends Component {
                           style={styles.fumiStyle}
                           label={'Место на парковке'}
                           iconClass={Icon}
-                          iconName={'directions-car'}
+                          iconName={'room'}
                           iconColor={Colors.textColor}
                           iconSize={20}
                           labelStyle={styles.fumiLabel}
@@ -205,11 +240,9 @@ export default class VisitorTicketEditor extends Component {
                           label="Парковка"
                           items={this.props.carParkings}
                           onUpdate={(text) => {this.updateField(text, 'parking')}}/>
+                  </View>}
+                 </View>
 
-                  </View>
-                }
-
-                {this.state.additionalFieldsVisible &&
                   <View style={styles.fieldsContainer}>
                     <TextInput
                       placeholder="Примечание"
@@ -220,36 +253,6 @@ export default class VisitorTicketEditor extends Component {
                       onChangeText={(text) => {this.props.updateField(text, 'note')}}
                       />
                   </View>
-                }
-
-                <View style={styles.fieldsContainer}>
-                    <CheckBox
-                      title='Долгосрочная'
-                      containerStyle={styles.checkboxContainer}
-                      textStyle={styles.checkboxText}
-                      checked={this.state.longTerm}
-                      checkedColor={Colors.textColor}
-                      onPress={() => {this.setVisible('longTerm')}}/>
-                    <DatePickerComponent
-                      date={this.props.ticket.visitDate}
-                      onUpdate={(date) => {this.updateField(date, 'visitDate')}}
-                      label="Дата *"
-                      placeholder="Выберите дату"/>
-                    {this.state.longTerm &&
-                    <DatePickerComponent
-                      isHighlighted={this.props.fieldsHighlights.expirationDate}
-                      date={this.props.ticket.expirationDate ? this.props.ticket.expirationDate : new Date()}
-                      onUpdate={(date) => {this.updateField(date, 'expirationDate')}}
-                      label="Дата окончания *"
-                      placeholder="Выберите дату"
-                      />
-                    }
-                    <PickerComponent
-                      isHighlighted={this.props.fieldsHighlights.khimkiTime}
-                      label="Время *"
-                      items={this.props.times}
-                      onUpdate={(text) => {this.updateField(text, 'khimkiTime')}}/>
-                </View>
 
                 </View>
             </ScrollView>
@@ -316,9 +319,15 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: 20,
     fontSize: 18,
-    color: '#53565A',
+    color: Colors.textColor,
     padding: 10,
     borderWidth: 5,
     borderColor: '#FFF'
+  },
+  field: {
+    margin: 10,
+    color: Colors.textColor,
+    fontSize: 18,
+    fontWeight: '500'
   }
 })

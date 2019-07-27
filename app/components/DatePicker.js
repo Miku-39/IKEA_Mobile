@@ -15,10 +15,10 @@ export default class DatePickerComponent extends React.Component {
     maxDate.setFullYear(minDate.getFullYear()+2)
 
     return (
-      <View style={{marginBottom: 10}}>
+      <View style={{margin: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
           <Text style={styles.pickerLabel}>{this.props.label}</Text>
           <DatePicker
-              style={{ marginLeft: 10, alignSelf: 'center', height: 40, width: 210}}
+              style={{ alignSelf: 'center', height: 40, width: 210, fontSize: 18, color: Colors.textColor,}}
               date={this.props.date}
               mode="date"
               format="YYYY-MM-DD"

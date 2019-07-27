@@ -156,7 +156,7 @@ export default class TicketsScreen extends Component {
                     searchBarIsShown &&
                     <SearchBar
                         lightTheme
-                        clearIcon={{color: '#53565A', name: 'close'}}
+                        clearIcon={{color: Colors.textColor, name: 'close'}}
                         inputStyle={{backgroundColor: 'white', fontSize: 20}}
                         containerStyle={{backgroundColor: Colors.accentColor, height: Metrics.navBarHeight, width: '100%', marginTop: -1}}
                         onChangeText={this._handleSearchTextChanged}
