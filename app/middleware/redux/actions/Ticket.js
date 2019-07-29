@@ -53,10 +53,10 @@ export const add = (ticket) => {
     }
 }
 
-export const addFile = (file, type, name) => {
+export const addFile = (file) => {
   return {
       type: ADD_FILE_REQUEST,
-      payload: (file, type, name)
+      payload: (file)
   }
 }
 

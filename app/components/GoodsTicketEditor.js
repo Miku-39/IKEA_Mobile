@@ -29,7 +29,7 @@ export default class GoodsTicketEditor extends Component {
        selectedValue: null,
        selectedParking: this.props.initialParking,
        fieldsVisible: {
-         note: (this.props.ticketType == 'GOODS')
+         note: true
        },
        longTerm: false,
        allFields: false
@@ -54,7 +54,6 @@ export default class GoodsTicketEditor extends Component {
 
     var fieldsVisible = {
       carNumber: ((fields.khimkiRequestType == '4022223527000') || (fields.khimkiRequestType == '4022223531000')),
-      parkingPlace: fields.khimkiRequestType == '4022223527000',
       note: true
     }
 
@@ -71,6 +70,39 @@ export default class GoodsTicketEditor extends Component {
                 <View style={{
                   flexDirection: 'column',
                   marginBottom: 150}}>
+                  <View style={styles.fieldsContainer}>
+                    <Text style={styles.field}>Ввоз/Вывоз/Перемещение</Text>
+                  </View>
+
+                  <View style={styles.fieldsContainer}>
+                      <DatePickerComponent
+                        date={this.props.ticket.visitDate}
+                        onUpdate={(date) => {this.updateField(date, 'visitDate')}}
+                        label="Дата *"
+                        placeholder="Выберите дату"/>
+                      <PickerComponent
+                        isHighlighted={this.props.fieldsHighlights.khimkiTime}
+                        label="Время *"
+                        items={this.props.times}
+                        onUpdate={(text) => {this.updateField(text, 'khimkiTime')}}/>
+                      <CheckBox
+                        title='Долгосрочная'
+                        containerStyle={styles.checkboxContainer}
+                        textStyle={styles.checkboxText}
+                        checked={this.state.longTerm}
+                        checkedColor={Colors.textColor}
+                        onPress={() => {this.setVisible('longTerm')}}/>
+                      {this.state.longTerm &&
+                      <DatePickerComponent
+                        isHighlighted={this.props.fieldsHighlights.expirationDate}
+                        date={this.props.ticket.expirationDate ? this.props.ticket.expirationDate : new Date()}
+                        onUpdate={(date) => {this.updateField(date, 'expirationDate')}}
+                        label="Действует до *"
+                        placeholder="Выберите дату"
+                        />
+                      }
+                  </View>
+
                   <View style={styles.fieldsContainer}>
                           <PickerComponent
                             isHighlighted={this.props.fieldsHighlights.khimkiRequestType}
@@ -127,18 +159,6 @@ export default class GoodsTicketEditor extends Component {
                           inputStyle={styles.fumiInput}
                           onChangeText={(text) => {this.updateField(text, 'carNumber')}}/>
                       </View>
-                      {this.state.fieldsVisible.parkingPlace &&
-                        <Fumi
-                          style={styles.fumiStyle}
-                          label={'Место на парковке'}
-                          iconClass={Icon}
-                          iconName={'directions-car'}
-                          iconColor={Colors.textColor}
-                          iconSize={20}
-                          labelStyle={styles.fumiLabel}
-                          inputStyle={styles.fumiInput}
-                          onChangeText={(text) => {this.updateField(text, 'parkingPlace')}}/>
-                      }
                   </View>
                 }
                 {this.state.fieldsVisible.note &&
@@ -165,34 +185,6 @@ export default class GoodsTicketEditor extends Component {
                   </View>
                   </View>
                 }
-                  <View style={styles.fieldsContainer}>
-                      <CheckBox
-                        title='Долгосрочная'
-                        containerStyle={styles.checkboxContainer}
-                        textStyle={styles.checkboxText}
-                        checked={this.state.longTerm}
-                        checkedColor={Colors.textColor}
-                        onPress={() => {this.setVisible('longTerm')}}/>
-                      <DatePickerComponent
-                        date={this.props.ticket.visitDate}
-                        onUpdate={(date) => {this.updateField(date, 'visitDate')}}
-                        label="Дата *"
-                        placeholder="Выберите дату"/>
-                      {this.state.longTerm &&
-                      <DatePickerComponent
-                        isHighlighted={this.props.fieldsHighlights.expirationDate}
-                        date={this.props.ticket.expirationDate ? this.props.ticket.expirationDate : new Date()}
-                        onUpdate={(date) => {this.updateField(date, 'expirationDate')}}
-                        label="Дата окончания *"
-                        placeholder="Выберите дату"
-                        />
-                      }
-                      <PickerComponent
-                        isHighlighted={this.props.fieldsHighlights.khimkiTime}
-                        label="Время *"
-                        items={this.props.times}
-                        onUpdate={(text) => {this.updateField(text, 'khimkiTime')}}/>
-                  </View>
 
                 </View>
             </ScrollView>
@@ -259,9 +251,15 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: 20,
     fontSize: 18,
-    color: '#53565A',
+    color: Colors.textColor,
     padding: 10,
     borderWidth: 5,
     borderColor: '#FFF'
+  },
+  field: {
+    margin: 10,
+    color: Colors.textColor,
+    fontSize: 18,
+    fontWeight: '500'
   }
 })

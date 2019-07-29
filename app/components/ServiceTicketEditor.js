@@ -5,6 +5,7 @@ import { Fumi } from 'react-native-textinput-effects'
 import DatePicker from 'react-native-datepicker'
 import ReactNativePickerModule from 'react-native-picker-module'
 import { CheckBox } from 'react-native-elements'
+import ImagePickerComponent from '../components/ImagePicker'
 import DatePickerComponent from '../components/DatePicker'
 
 import { Colors } from '../theme'
@@ -29,25 +30,31 @@ export default class ServiceScreen extends Component {
     return (
         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
             <ScrollView>
+                <View style={styles.fieldsContainer}>
+                  <Text style={styles.field}>В инженерную службу</Text>
+                </View>
+
                 <View>
                 <Fumi
                     style={[styles.fumiStyle, {borderColor: this.props.fieldsHighlights.whereHappened ? Colors.accentColor : '#FFF'}]}
-                    label={'Место *'}
+                    label={'Место расположения *'}
                     iconClass={Icon}
                     iconName={'room'}
-                    iconColor={'#53565A'}
+                    iconColor={Colors.textColor}
                     iconSize={20}
                     inputStyle={styles.fumiInput}
                     onChangeText={(text) => {this.props.updateField(text, 'whereHappened')}}
                 />
                 <TextInput
-                  placeholder="Что сделать *"
+                  placeholder="Что случилось *"
                   underlineColorAndroid='transparent'
                   style={[styles.textInputStyle, {borderColor: this.props.fieldsHighlights.whatHappened ? Colors.accentColor : '#FFF'}]}
                   multiline={true}
                   scrollEnabled={true}
                   onChangeText={(text) => {this.props.updateField(text, 'whatHappened')}}
                   />
+                  <ImagePickerComponent
+                    onChoose={this.props.saveFile}/>
                 </View>
 
             </ScrollView>
@@ -56,7 +63,7 @@ export default class ServiceScreen extends Component {
   }
 }const styles = StyleSheet.create({
     fumiInput: {
-      color: '#53565A',
+      color: Colors.textColor,
       marginBottom: Platform.OS === 'android' ? 7 : 0
    },
    fumiStyle: {
@@ -73,8 +80,19 @@ export default class ServiceScreen extends Component {
     backgroundColor : "#FFF",
     marginTop: 10,
     fontSize: 18,
-    color: '#53565A',
+    color: Colors.textColor,
     padding: 10,
     paddingTop: 10
+  },
+  field: {
+    margin: 10,
+    color: Colors.textColor,
+    fontSize: 18,
+    fontWeight: '500'
+  },
+  fieldsContainer: {
+    backgroundColor: Colors.fieldsColor,
+    borderRadius: 20,
+    marginBottom: 10
   }
 })

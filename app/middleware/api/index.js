@@ -37,12 +37,12 @@ const login = (user, password) =>  {
   return instance.post('/token', body, conf).catch(onError)
 }
 
-const addFile = (uri, type, name) =>  {
+const addFile = (uri) =>  {
     let bodyFormData = new FormData()
     bodyFormData.append("file", {
       uri: uri,
-      type: type, // or photo.type
-      name: name
+      type: "image/jpeg", // or photo.type
+      name: "MobileApp.jpg"
     });
     return instance.post("/vNext/v1/files", bodyFormData, { headers: {'Content-Type': 'multipart/form-data' }} );
 }
@@ -50,10 +50,10 @@ const addFile = (uri, type, name) =>  {
 const authorize = () => instance.get('/vNext/v1/users/current')
 const setAuthHeader = (token) => instance.defaults.headers.authorization = `Bearer ${token}`
 
-const fetchParkingsForCars = () => instance.get(`/vNext/v1/parkings`).catch(onError)
+const fetchParkingsForCars = () => instance.get(`vNext/v1/parkings?filterBy=Type.Id="4022244917000" `).catch(onError)
 const fetchParkingsForGoods = () => instance.get(`/vNext/v1/parkings`).catch(onError)
 const fetchAllTickets = companyId => {
-return instance.get('vNext/v1/requests?orderBy=number+desc', conf).catch(onError)
+return instance.get('vNext/v1/requests?orderBy=number+desc,&filters=NotClosedRequests,RequestsForTenant', conf).catch(onError)
 }
 
 const updateTicketStatus = (ticket) => instance.patch(`/vnext/v1/requests/${ticket.id}`, {status: ticket.status})

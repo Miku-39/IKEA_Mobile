@@ -4,7 +4,8 @@ import { View,
   TouchableOpacity,
   Text,
   NativeModules,
-  LayoutAnimation
+  LayoutAnimation,
+  Keyboard
 } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -38,21 +39,23 @@ UIManager.setLayoutAnimationEnabledExperimental &&
     }),
     dispatch => ({
         addTicket: (ticket) => dispatch(add(ticket)),
-        addFile: (file, type, name) => dispatch(addFile(file, type, name)),
+        addFile: (file) => dispatch(addFile(file)),
         dismiss: () => dispatch(dismiss())
     })
 )
 export default class GoodsScreen extends Component {
     static navigationOptions = ({navigation}) => {
         return ({
-            title: 'Внос/Вынос',
+            title: 'Новая заявка',
             headerRight: (
                 <View style={{flexDirection: 'row', paddingRight: 7}}>
                     <TouchableOpacity onPress={() => headerButtonsHandler.save()}>
                       <Icon name='check' color='#FFF' size={30}/>
                     </TouchableOpacity>
                 </View>
-            )
+            ),
+            headerLeft: (<Icon name='chevron-left' color='#FFF' size={40} onPress={ () => { navigation.goBack() } }/> )
+
         })
     }
 
@@ -93,7 +96,7 @@ export default class GoodsScreen extends Component {
         if (added){
             Alert.alert( '', 'Добавлено успешно',
             [
-                {text: 'Закрыть', onPress: () => {}}
+                {text: 'Закрыть', onPress: () => { goBack() }}
             ])
             this.props.dismiss()
         }
@@ -109,6 +112,7 @@ export default class GoodsScreen extends Component {
     save = () => {
         const { ticket } = this.state
         const { ticketType } = this.props.navigation.state.params
+        if(!ticket.khimkiTime){ticket.khimkiTime = '4067716405000'}
         var fieldsHighlights = {
           materialValuesData: !ticket.materialValuesData,
           companyName: !ticket.companyName,
@@ -124,6 +128,8 @@ export default class GoodsScreen extends Component {
                 break;
             }}
 
+        Keyboard.dismiss()
+
         if(passed){
           this.props.addTicket(ticket)
         }else{
@@ -134,15 +140,12 @@ export default class GoodsScreen extends Component {
         this.setState({'fieldsHighlights': fieldsHighlights})
     }
 
-    saveFile = (file, type, name) => {
-        this.props.addFile(file, type, name)
+    saveFile = (file) => {
+        this.props.addFile(file)
     }
 
     updateField = (data, field) => {
       const { ticket } = this.state
-      if(field == 'khimkiRequestType'){
-        ticket.parking = data == '4022223527000' ? '4016242730000' : null
-      }
       if(field == 'longTerm'){
         ticket.expirationDate = null
       }
