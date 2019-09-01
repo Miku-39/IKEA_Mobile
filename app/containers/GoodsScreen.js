@@ -158,13 +158,15 @@ export default class GoodsScreen extends Component {
         const { ticket, ticketType, session} = this.state
         const { isAdding } = this.props
         const times = [
+          { name: "8:00-18:00",  id: "4067716405000" },
+          { name: "6:00-8:00",   id: "4101841236000" },
           { name: "8:00-10:00",  id: "4030991143000" },
           { name: "10:00-12:00", id: "4030991147000" },
           { name: "12:00-14:00", id: "4030991151000" },
           { name: "14:00-16:00", id: "4030991158000" },
           { name: "16:00-18:00", id: "4030991161000" },
-          { name: "8:00-18:00",  id: "4067716405000" },
-          { name: "После 20:00", id: "4067716412000" }
+          { name: "18:00-20:00", id: "4101841258000" },
+          { name: "20:00-6:00",  id: "4067716412000" }
         ]
         const goodsTypes = [
           { name: "Ввоз",  id: "4022223527000" },

@@ -31,7 +31,7 @@ export default class ServiceScreen extends Component {
         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
             <ScrollView>
                 <View style={styles.fieldsContainer}>
-                  <Text style={styles.field}>В инженерную службу</Text>
+                  <Text style={styles.field}>В инженерную службу Арендодателя</Text>
                 </View>
 
                 <View>

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { View } from 'react-native'
 import { Colors } from '../theme'
 import Ticket from '../components/Ticket'
-
 const fieldsProperties = [
 {
   type:               { name: 'Вид', type: 'list' },
@@ -31,15 +30,18 @@ const fieldsProperties = [
   whereHappened:      { name: 'Место', type: 'text' },
   whatHappened:       { name: 'Что сделать', type: 'text' }
 }, {
-  note:               { name: 'Примечание', type: 'text' }
+  note:               { name: 'Примечание', type: 'text' },
+  managementCompanyComment: { name: 'Комментарий от администрации ХБП', type: 'text'}
 }
 ]
+
 
 export default class TicketScreen extends Component {
     static navigationOptions = ({navigation}) => {
         const { ticket } = navigation.state.params
+
         return ({
-            title: ticket.number + ' - ' + ticket.status.name
+            title: ticket.number + ' - ' + ticket.status.alternativeName
         })
     }
 

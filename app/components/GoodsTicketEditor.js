@@ -29,7 +29,8 @@ export default class GoodsTicketEditor extends Component {
        selectedValue: null,
        selectedParking: this.props.initialParking,
        fieldsVisible: {
-         note: true
+         note: true,
+         khimkiAccessPremises: false
        },
        longTerm: false,
        allFields: false
@@ -54,7 +55,8 @@ export default class GoodsTicketEditor extends Component {
 
     var fieldsVisible = {
       carNumber: ((fields.khimkiRequestType == '4022223527000') || (fields.khimkiRequestType == '4022223531000')),
-      note: true
+      note: true,
+      khimkiAccessPremises: (fields.khimkiRequestType && fields.khimkiRequestType != '4022223531000')
     }
 
     fields['fieldsVisible'] = fieldsVisible
@@ -66,10 +68,10 @@ export default class GoodsTicketEditor extends Component {
     Text.defaultProps.allowFontScaling = true;
     return (
         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
-            <ScrollView style={{backgroundColor: Colors.backgroundColor}}>
+            <ScrollView>
                 <View style={{
                   flexDirection: 'column',
-                  marginBottom: 150}}>
+                  marginBottom: 290}}>
                   <View style={styles.fieldsContainer}>
                     <Text style={styles.field}>Ввоз/Вывоз/Перемещение</Text>
                   </View>
@@ -161,8 +163,6 @@ export default class GoodsTicketEditor extends Component {
                       </View>
                   </View>
                 }
-                {this.state.fieldsVisible.note &&
-                  <View>
                   <View style={styles.fieldsContainer}>
                     <TextInput
                       placeholder="Данные мат. ценностей *"
@@ -173,6 +173,17 @@ export default class GoodsTicketEditor extends Component {
                       onChangeText={(text) => {this.props.updateField(text, 'materialValuesData')}}
                       />
                   </View>
+                  {this.state.fieldsVisible.khimkiAccessPremises &&
+                  <View style={styles.fieldsContainer}>
+                    <TextInput
+                      placeholder="Маршрут перемещения"
+                      underlineColorAndroid='transparent'
+                      style={styles.textInputStyle}
+                      multiline={true}
+                      scrollEnabled={true}
+                      onChangeText={(text) => {this.props.updateField(text, 'khimkiAccessPremises')}}
+                      />
+                  </View>}
                   <View style={styles.fieldsContainer}>
                     <TextInput
                       placeholder="Примечание"
@@ -183,8 +194,6 @@ export default class GoodsTicketEditor extends Component {
                       onChangeText={(text) => {this.props.updateField(text, 'note')}}
                       />
                   </View>
-                  </View>
-                }
 
                 </View>
             </ScrollView>

@@ -6,7 +6,9 @@ import { View,
   Text,
   Keyboard,
   StyleSheet,
-  FlatList
+  FlatList,
+  LayoutAnimation,
+  Platform
 } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { SearchBar } from 'react-native-elements'
@@ -86,26 +88,32 @@ export default class TicketsScreen extends Component {
     }
 
     _handleShowSearchBarClick = () => {
+        LayoutAnimation.easeInEaseOut();
         const { searchBarIsShown } = this.state
-        if (!searchBarIsShown)
-          this.setState({searchBarIsShown: true})
+        this.setState({searchBarIsShown: !this.state.searchBarIsShown})
     }
 
     _handleHideSearchBarClick = () => {
+        LayoutAnimation.easeInEaseOut();
         this.setState({searchBarIsShown: false})
         Keyboard.dismiss()
     }
 
     _handleSearchTextChanged = (text) => {
-        const filter = text.toLowerCase()
+        const search = text.toLowerCase()
         const { items } = this.props.tickets
-        let data
 
-        if (filter) {
-            data = items.filter(item => item.visitorFullName && item.visitorFullName.toLowerCase().includes(filter))
-        } else {
-            data = items
-        }
+        data = items.filter( item => {
+          containsSearch = false
+          for(var field in item){
+          if(item[field]){
+            value = item[field].toString().toLowerCase()
+            if(value.includes(search)){containsSearch = true}}
+          }
+          return !search || containsSearch
+        })
+        if(Platform.OS != 'android')
+          LayoutAnimation.easeInEaseOut();
         this.setState({items: data})
     }
 
@@ -167,7 +175,7 @@ export default class TicketsScreen extends Component {
 
                 <Loader message='Обновление заявок' isLoading={isFetching}>
                   <FlatList
-                      style={{flex: 1, backgroundColor: Colors.backgroundColor}}
+                      style={{flex: 1}}
                       data={items}
                       renderItem={this.renderItem}
                       keyExtractor={extractKey} />
@@ -183,8 +191,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'stretch',
         width: '100%',
-        height: '100%',
-        backgroundColor: Colors.backgroundColor
+        height: '100%'
     },
     rowBack: {
         flexDirection: 'row',

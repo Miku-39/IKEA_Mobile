@@ -33,11 +33,15 @@ export default class PickerComponent extends React.Component {
         <View style={[styles.picker, {
         borderColor: this.props.isHighlighted ? Colors.accentColor : Colors.buttonColor,
         borderRadius: this.props.isHighlighted ? 25 : 20,
-        height: this.props.isHighlighted ? 50 : 40,
-        width: this.props.isHighlighted ? 210 : 200,}]}>
+        width: this.props.isHighlighted ? 210 : 200,
+        minHeight: this.props.isHighlighted ? 50 : 40}]}>
           <Picker
-            style={{height: this.props.isHighlighted ? 50 : 40,
-                    width: this.props.isHighlighted ? 210 : 200,}}
+            style={{width: this.props.isHighlighted ? 210 : 200,
+                    maxWidth: this.props.isHighlighted ? 200 : 190,
+                    marginRight: -5,
+                    marginBottom: -10,
+                    marginTop: this.props.isHighlighted ? 5 : 0,
+                    minHeight: 40}}
             onValueChange={this.handlePicker}
             items={this.data}
             title={this.props.label}

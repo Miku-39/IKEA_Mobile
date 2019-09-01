@@ -28,12 +28,14 @@ export default class VisitorTicketEditor extends Component {
      this.state = {
        selectedValue: null,
        selectedParking: this.props.initialParking,
-       fieldsVisible: {},
+       fieldsVisible: {
+         parkingPlace: true
+       },
        'khimkiTime': true,
        'expirationDate': false,
        'additionalFieldsVisible': false,
        'carFieldsVisible': false,
-       longTerm: false
+       longTerm: false,
      }
   }
 
@@ -68,7 +70,8 @@ export default class VisitorTicketEditor extends Component {
 
     var fieldsVisible = {
       expirationDate: fields.longTerm,
-      khimkiTime: !fields.longTerm
+      khimkiTime: !fields.longTerm,
+      parkingPlace: fields.parking != '4063239747000'
     }
 
     fields['fieldsVisible'] = fieldsVisible
@@ -80,10 +83,10 @@ export default class VisitorTicketEditor extends Component {
     Text.defaultProps.allowFontScaling = true;
     return (
         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
-            <ScrollView style={{backgroundColor: Colors.backgroundColor}}>
+            <ScrollView>
                 <View style={{
                   flexDirection: 'column',
-                  marginBottom: 150}}>
+                  marginBottom: 290}}>
 
                   <View style={styles.fieldsContainer}>
                     <Text style={styles.field}>На гостя и парковку</Text>
@@ -226,7 +229,12 @@ export default class VisitorTicketEditor extends Component {
                           labelStyle={styles.fumiLabel}
                           inputStyle={styles.fumiInput}
                           onChangeText={(text) => {this.updateField(text, 'carNumber')}}/>
-                      <Fumi
+                      <PickerComponent
+                          label="Парковка"
+                          items={this.props.carParkings}
+                          onUpdate={(text) => {this.updateField(text, 'parking')}}/>
+                    {this.state.fieldsVisible.parkingPlace &&
+                    <Fumi
                           style={styles.fumiStyle}
                           label={'Место на парковке'}
                           iconClass={Icon}
@@ -235,11 +243,7 @@ export default class VisitorTicketEditor extends Component {
                           iconSize={20}
                           labelStyle={styles.fumiLabel}
                           inputStyle={styles.fumiInput}
-                          onChangeText={(text) => {this.updateField(text, 'parkingPlace')}}/>
-                      <PickerComponent
-                          label="Парковка"
-                          items={this.props.carParkings}
-                          onUpdate={(text) => {this.updateField(text, 'parking')}}/>
+                          onChangeText={(text) => {this.updateField(text, 'parkingPlace')}}/>}
                   </View>}
                  </View>
 
