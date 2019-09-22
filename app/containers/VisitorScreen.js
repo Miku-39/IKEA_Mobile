@@ -127,7 +127,14 @@ export default class VisitorScreen extends Component {
         Keyboard.dismiss()
 
         if(passed){
-          this.props.addTicket(ticket)
+          if(ticket.longTerm && ticket.parking == '4063239747000'){
+            const date = new Date(ticket.visitDate)
+            const expires = new Date(ticket.expirationDate)
+            if(expires.getDate() - date.getDate() > 4){
+              Alert.alert('Неверный срок действия заявки');
+              fieldsHighlights.expirationDate = true
+            }else{ this.props.addTicket(ticket) }
+          }else{ this.props.addTicket(ticket) }
         }else{
           Alert.alert('Не заполнены обязательные поля')
         }
@@ -184,7 +191,7 @@ export default class VisitorScreen extends Component {
                     fieldsHighlights={this.state.fieldsHighlights}
                     ticketType={ticketType}
 
-                    times={times}
+                    times={session.times}
                     carParkings={carParkings}
                     services={session.services}
                 />

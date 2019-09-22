@@ -14,6 +14,7 @@ import { CheckBox } from 'react-native-elements'
 import { Colors } from '../theme'
 import DatePickerComponent from '../components/DatePicker'
 import PickerComponent from '../components/PickerAlternate'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import ReactNativePickerModule from 'react-native-picker-module'
 
@@ -68,10 +69,15 @@ export default class GoodsTicketEditor extends Component {
     Text.defaultProps.allowFontScaling = true;
     return (
         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
-            <ScrollView>
+                <KeyboardAwareScrollView
+                    enableOnAndroid={true}
+                    extraHeight={130}
+                    extraScrollHeight={130}>
+
                 <View style={{
                   flexDirection: 'column',
-                  marginBottom: 290}}>
+                  marginBottom: 150}}>
+
                   <View style={styles.fieldsContainer}>
                     <Text style={styles.field}>Ввоз/Вывоз/Перемещение</Text>
                   </View>
@@ -196,7 +202,7 @@ export default class GoodsTicketEditor extends Component {
                   </View>
 
                 </View>
-            </ScrollView>
+            </KeyboardAwareScrollView>
         </View>
     )
   }
