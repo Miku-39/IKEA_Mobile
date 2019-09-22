@@ -32,6 +32,8 @@
     "react-native-document-picker": "^3.2.2",
     "react-native-elements": "^0.19.1",
     "react-native-filesystem": "^0.1.0",
+    "react-native-keyboard-aware-scroll-view": "^0.9.1",
+    "react-native-keyboard-aware-scrollview": "^2.0.0",
     "react-native-largelist": "^1.2.5",
     "react-native-magic-move": "^0.6.2",
     "react-native-picker-module": "^0.1.2",

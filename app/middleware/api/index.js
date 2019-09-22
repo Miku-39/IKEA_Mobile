@@ -52,6 +52,7 @@ const setAuthHeader = (token) => instance.defaults.headers.authorization = `Bear
 
 const fetchParkingsForCars = () => instance.get(`vNext/v1/parkings?filterBy=Type.Id="4022244917000" `).catch(onError)
 const fetchParkingsForGoods = () => instance.get(`/vNext/v1/parkings`).catch(onError)
+const fetchTimes = () => instance.get(`/vNext/v1/times`).catch(onError)
 const fetchAllTickets = companyId => {
 return instance.get('vNext/v1/requests?orderBy=number+desc,&filters=NotClosedRequests,RequestsForTenant', conf).catch(onError)
 }
@@ -61,5 +62,5 @@ const updateTicketStatus = (ticket) => instance.patch(`/vnext/v1/requests/${tick
 const addTicket = (ticket) => instance.post('/vNext/v1/requests', ticket).catch(onError)
 
 export default { login, authorize, setAuthHeader,
-                 fetchParkingsForCars, fetchParkingsForGoods, fetchAllTickets, updateTicketStatus,
+                 fetchParkingsForCars, fetchParkingsForGoods, fetchAllTickets, updateTicketStatus, fetchTimes,
                  addTicket, addFile }

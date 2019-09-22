@@ -22,15 +22,15 @@ import { Colors, Images, Metrics } from '../theme'
 
 class LoginComponent extends Component {
     render() {
-        const keyboardVerticalOffset = Platform.OS === 'ios' ? 50 : 0
+        const keyboardVerticalOffset = 50
         return (
-            <View style={styles.screenContainer}>
+            <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={keyboardVerticalOffset} style={styles.screenContainer}>
                 <View style={styles.logoContainer}>
                     <Image source={Images.logo} resizeMode='contain' style={styles.logo} />
                 </View>
 
                 <View style={styles.contentContainer}>
-                    <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={keyboardVerticalOffset} style={styles.inputsContainer}>
+                    <View style={styles.inputsContainer}>
                         <View style={styles.inputFieldContainer}>
 
                             <View style={styles.iconContainer}>
@@ -75,7 +75,7 @@ class LoginComponent extends Component {
                                 underlineColorAndroid='transparent' />
 
                         </View>
-                    </KeyboardAvoidingView>
+                    </View>
 
                     <View style={styles.enterContainer}>
                         <TouchableOpacity onPress={() => {
@@ -91,12 +91,12 @@ class LoginComponent extends Component {
 
                     {
                         this.props.disabled ?
-                        <View style={{alignSelf: 'center'}}>
+                        <View style={{alignSelf: 'center', marginTop: 20}}>
                             <ActivityIndicator size="large" color={Colors.accentColor}/>
                         </View> : null
                     }
                 </View>
-            </View>
+            </KeyboardAvoidingView>
 
         )
     }
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({ // стили всех элементов
   },
   screenContainer: {
     flexDirection: 'column',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-around',
     alignItems: 'center',
     width: '100%',
     height: '70%'
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({ // стили всех элементов
     height: '50%',
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 40
+    //margin: 40
   },
   logo: { //логотип
     width: 200,
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({ // стили всех элементов
   },
   enterContainer: {
     alignItems: 'center',
-    margin: 20
+    marginTop: 20
   },
   enterButton: { // кнопка
     justifyContent: 'center',

@@ -185,7 +185,7 @@ export default class GoodsScreen extends Component {
                     fieldsHighlights={this.state.fieldsHighlights}
                     ticketType={ticketType}
 
-                    times={times}
+                    times={session.times}
                     goodsTypes={goodsTypes}
                     carParkings={session.carParkings.map((item) => {return {name: item.name[0], id: item.id}})}
                     services={session.services}

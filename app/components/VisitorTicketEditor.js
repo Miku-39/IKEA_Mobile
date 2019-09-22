@@ -14,6 +14,7 @@ import { CheckBox } from 'react-native-elements'
 import { Colors } from '../theme'
 import DatePickerComponent from '../components/DatePicker'
 import PickerComponent from '../components/PickerAlternate'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import ReactNativePickerModule from 'react-native-picker-module'
 
@@ -68,12 +69,27 @@ export default class VisitorTicketEditor extends Component {
     var fields = this.state
     fields[field] = data
 
+    var date = fields['visitDate']
+    var minDate
+    if(date){
+      date = new Date(date)
+      minDate = new Date(date)
+      date.setDate(date.getDate() + 4)
+    }else{
+      date = new Date()
+      minDate = new Date()
+      date.setDate(date.getDate() + 4)
+    }
+
+
     var fieldsVisible = {
       expirationDate: fields.longTerm,
       khimkiTime: !fields.longTerm,
-      parkingPlace: fields.parking != '4063239747000'
+      parkingPlace: fields.parking != '4063239747000',
+      maxExpirationDate: fields.parking == '4063239747000' ? date : null,
+      minExpirationDate: minDate
     }
-
+    console.log(fieldsVisible.maxExpirationDate)
     fields['fieldsVisible'] = fieldsVisible
     this.setState(fields);
   }
@@ -82,11 +98,15 @@ export default class VisitorTicketEditor extends Component {
     Text.defaultProps = Text.defaultProps || {};
     Text.defaultProps.allowFontScaling = true;
     return (
-        <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
-            <ScrollView>
+        <View style={{ flexGrow: 1, flexDirection: 'column', justifyContent: 'center'}}>
+        <KeyboardAwareScrollView
+            enableOnAndroid={true}
+            extraHeight={130}
+            extraScrollHeight={130}>
+
                 <View style={{
                   flexDirection: 'column',
-                  marginBottom: 290}}>
+                  marginBottom: 150}}>
 
                   <View style={styles.fieldsContainer}>
                     <Text style={styles.field}>На гостя и парковку</Text>
@@ -117,6 +137,8 @@ export default class VisitorTicketEditor extends Component {
                         onUpdate={(date) => {this.updateField(date, 'expirationDate')}}
                         label="Действует до *"
                         placeholder="Выберите дату"
+                        maxDate={this.state.fieldsVisible.maxExpirationDate}
+                        minDate={this.state.fieldsVisible.minExpirationDate}
                         />
                       }
                   </View>
@@ -259,7 +281,7 @@ export default class VisitorTicketEditor extends Component {
                   </View>
 
                 </View>
-            </ScrollView>
+            </KeyboardAwareScrollView>
         </View>
     )
   }
